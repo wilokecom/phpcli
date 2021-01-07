@@ -16,7 +16,7 @@
     "issues": "https://github.com/wilokecom/phpcli/issues",
     "source": "https://github.com/wilokecom/phpcli"
   },
-  "require" :{
+  "require-dev" :{
     "symfony/console": "2.6.7",
     "symfony/filesystem": "^v5.1.2"
   },
