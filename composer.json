@@ -25,5 +25,8 @@
     "psr-4": {
       "WilokeCommandLine\\": "src/"
     }
-  }
+  },
+  "bin": [
+    "wilokecli"
+  ]
 }
