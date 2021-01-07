@@ -1,0 +1,29 @@
+{
+  "name": "Wiloke PHP CLI",
+  "description": "The easiest and fastest way to create Wiloke Component",
+  "type": "library",
+  "license": "MIT",
+  "homepage": "https://github.com/wilokecom/phpcli",
+  "authors": [
+    {
+      "name": "nguyendttn",
+      "email": "support@wiloke.com",
+      "homepage": "https://wiloke.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://github.com/wilokecom/phpcli/issues",
+    "source": "https://github.com/wilokecom/phpcli"
+  },
+  "require-dev" :{
+    "symfony/console": "2.6.7",
+    "symfony/filesystem": "^v5.1.2",
+    "phpunit/phpunit": "^7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "WilokeCommandLine\\": "src/"
+    }
+  }
+}

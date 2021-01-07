@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit
+        colors="true"
+        bootstrap="./tests/bootstrap.php"
+        convertWarningsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertErrorsToExceptions="true"
+>
+    <testsuites>
+        <testsuite name="Wiloke Test">
+            <directory suffix=".php">./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./tests/</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <ini name="display_errors" value="ON"/>
+        <ini name="display_startup_errors" value="ON"/>
+        <env name="REST_BASE" value="REST_BASE_VALUE"/>
+        <env name="HOME_URL" value="HOME_URL_VALUE"/>
+    </php>
+</phpunit>
