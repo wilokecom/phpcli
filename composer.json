@@ -1,5 +1,5 @@
 {
-  "name": "Wiloke PHP CLI",
+  "name": "wilokecom/phpcli",
   "description": "The easiest and fastest way to create Wiloke Component",
   "type": "library",
   "license": "MIT",
