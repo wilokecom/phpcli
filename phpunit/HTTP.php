@@ -25,6 +25,12 @@ trait HTTP
 		return $this;
 	}
 
+	private function setUserLoggedIn()
+	{
+		wp_set_current_user($this->getAdminId()->userId);
+		return $this;
+	}
+
 	private function configureAPI()
 	{
 		global $aWILOKEGLOBAL;
@@ -55,7 +61,7 @@ trait HTTP
 		return $this->restAPI('', 'GET', $aArgs);
 	}
 
-	protected function setIsEnableUserLogin($status = true)
+	protected function enableUserLogin($status = true)
 	{
 		$this->isEnableUserLogin = $status;
 
@@ -93,7 +99,7 @@ trait HTTP
 		}
 		curl_close($ch);
 
-		$this->setIsEnableUserLogin(false);
+		$this->enableUserLogin(false);
 		$this->isAjax = false;
 
 		if (isset($errMsg)) {
