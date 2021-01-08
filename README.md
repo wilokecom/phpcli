@@ -5,7 +5,7 @@ Wiloke CLI is a PHP-CLI tool that helps you easily setup phpunit and commonly us
 
 To install Wiloke CLI, please run the following command line:
 <pre style="background: black; color: white">
-composer require wilokecom/phpcli
+composer require --dev wilokecom/phpcli
 </pre>
 
 ## Setting up PHPUnit Test for WordPress

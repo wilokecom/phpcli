@@ -65,7 +65,7 @@ trait HTTP
 	{
 		$this->isEnableUserLogin = $status;
 		$this->setUserLoggedIn();
-		
+
 		return $this;
 	}
 
