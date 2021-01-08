@@ -64,7 +64,8 @@ trait HTTP
 	protected function enableUserLogin($status = true)
 	{
 		$this->isEnableUserLogin = $status;
-
+		$this->setUserLoggedIn();
+		
 		return $this;
 	}
 
