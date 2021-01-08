@@ -27,3 +27,5 @@ if (isset($_ENV['REST_BASE']) && $_ENV['REST_BASE'] !== 'REST_BASE_VALUE') {
 	$aWILOKEGLOBAL['restBaseUrl'] = get_rest_url('', 'pl/v1');
 }
 
+$aWILOKEGLOBAL['ADMIN_USERNAME'] = $_ENV['ADMIN_USERNAME'];
+$aWILOKEGLOBAL['ADMIN_AUTH_PASS'] = $_ENV['ADMIN_AUTH_PASS'];

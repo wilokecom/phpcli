@@ -1,101 +1,110 @@
 <?php
 
-namespace WilokeNamespace;
+namespace WilokeTest;
 
-trait HTTP {
-	public function ajaxPost( array $aArgs ) {
+trait HTTP
+{
+	private $aAuth;
+
+	private $aAdminInfo
+		= [
+			'username' => 'admin'
+		];
+
+	private $isEnableUserLogin;
+	private $oUser;
+	private $userId;
+	private $restBase;
+	private $ajaxUrl;
+	private $isAjax = false;
+
+	private function getAdminId()
+	{
+		$this->oUser = get_user_by('login', $this->aAdminInfo['username']);
+		$this->userId = $this->oUser->ID;
+		return $this;
+	}
+
+	private function configureAPI()
+	{
 		global $aWILOKEGLOBAL;
+		$this->restBase = trailingslashit($aWILOKEGLOBAL['restBaseUrl']);
+		$this->ajaxUrl = $aWILOKEGLOBAL['ajaxUrl'];
+
+		$this->aAuth = [
+			'username' => $aWILOKEGLOBAL['ADMIN_USERNAME'],
+			'password' => $aWILOKEGLOBAL['ADMIN_AUTH_PASS'],
+		];
+
+		$this->aAdminInfo = [
+			'username' => $aWILOKEGLOBAL['ADMIN_USERNAME']
+		];
+
+		return $this;
+	}
+
+	public function ajaxPost(array $aArgs)
+	{
+		$this->isAjax = true;
+		return $this->restAPI('', 'POST', $aArgs);
+	}
+
+	public function ajaxGet(array $aArgs)
+	{
+		$this->isAjax = true;
+		return $this->restAPI('', 'GET', $aArgs);
+	}
+
+	protected function setIsEnableUserLogin($status = true)
+	{
+		$this->isEnableUserLogin = $status;
+
+		return $this;
+	}
+
+	protected function restAPI($endpoint, $method = 'POST', array $aArgs = [])
+	{
 		$ch = curl_init();
-		curl_setopt( $ch, CURLOPT_URL, $aWILOKEGLOBAL['ajaxUrl'] );
-		curl_setopt( $ch, CURLOPT_POST, 1 );
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $aArgs ) );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1 );
-		$output = curl_exec( $ch );
+		$url = $this->isAjax ? $this->ajaxUrl : $this->restBase . trailingslashit($endpoint);
 
-		if ( curl_errno( $ch ) ) {
-			$errMsg = curl_error( $ch );
-		}
-		curl_close( $ch );
-
-		if ( isset( $errMsg ) ) {
-			return [
-				'success' => false,
-				'msg'     => $errMsg
-			];
+		if ($method !== 'POST' && !empty($aArgs)) {
+			$url = add_query_args($aArgs, $url);
 		}
 
-		return json_decode( $output, true );
-	}
+		curl_setopt($ch, CURLOPT_URL, $url);
 
-	public function restGET( $endpoint, array $aArgs ) {
-		global $aWILOKEGLOBAL;
-		$url = trailingslashit( $aWILOKEGLOBAL['restBaseUrl'] ) . untrailingslashit( $endpoint );
-		$url = add_query_arg( [ 'query' => http_build_query( $aArgs ) ], $url );
-
-		$response = wp_remote_get( $url, [ 'sslverify' => false ] );
-
-		if ( is_wp_error( $response ) ) {
-			return [
-				'status' => false,
-				'msg'    => $response->get_error_message()
-			];
+		if ($this->isEnableUserLogin) {
+			curl_setopt($ch, CURLOPT_USERPWD, $this->aAuth['username'] . ':' . $this->aAuth['password']);
 		}
 
-		$body = wp_remote_retrieve_body( $response );
-		if ( wp_remote_retrieve_response_code( $response ) !== 200 ) {
-			return [
-				'status' => false,
-				'msg'    => sprintf( 'The code status is not 200. %s', $body )
-			];
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+		curl_setopt($ch, CURLOPT_POST, 1);
+
+		if ($method == 'POST') {
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($aArgs));
 		}
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+		$output = curl_exec($ch);
 
-		$aBody = json_decode( $body, true );
-
-		if ( isset( $aBody['code'] ) && $aBody['code'] == 'rest_no_route' ) {
-			return [
-				'status' => false,
-				'msg'    => $aBody['message']
-			];
+		if (curl_errno($ch)) {
+			$errMsg = curl_error($ch);
 		}
+		curl_close($ch);
 
-		return $aBody;
-	}
+		$this->setIsEnableUserLogin(false);
+		$this->isAjax = false;
 
-	protected function restAPI( $endpoint, $method = 'POST', array $aArgs = [] ) {
-		global $aWILOKEGLOBAL;
-		$ch  = curl_init();
-		$url = trailingslashit( $aWILOKEGLOBAL['restBaseUrl'] ) . trailingslashit( $endpoint );
-		if ( $method !== 'POST' && ! empty( $aArgs ) ) {
-			$url = add_query_args( $aArgs, $url );
-		}
-
-		curl_setopt( $ch, CURLOPT_URL, $url );
-		curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, $method );
-		curl_setopt( $ch, CURLOPT_POST, 1 );
-
-		if ( $method == 'POST' ) {
-			curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $aArgs ) );
-		}
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1 );
-		$output = curl_exec( $ch );
-
-		if ( curl_errno( $ch ) ) {
-			$errMsg = curl_error( $ch );
-		}
-		curl_close( $ch );
-
-		if ( isset( $errMsg ) ) {
+		if (isset($errMsg)) {
 			return [
 				'status' => false,
 				'msg'    => $errMsg
 			];
 		}
 
-		$aOutput = is_array( $output ) ? $output : json_decode( $output, true );
-		if ( isset( $aOutput['code'] ) && $aOutput['code'] == 'rest_no_route' ) {
+		$aOutput = is_array($output) ? $output : json_decode($output, true);
+		if (isset($aOutput['data']) && $aOutput['data']['status'] == 200) {
 			return [
 				'status' => false,
 				'msg'    => $aOutput['message']
@@ -105,19 +114,28 @@ trait HTTP {
 		return $aOutput;
 	}
 
-	public function restPOST( $endpoint, array $aArgs = [] ) {
-		return $this->restAPI( $endpoint, 'POST', $aArgs );
+	public function restGET($endpoint, array $aArgs = [])
+	{
+		return $this->restAPI($endpoint, 'GET', $aArgs);
 	}
 
-	public function restPUT( $endpoint, array $aArgs = [] ) {
-		return $this->restAPI( $endpoint, 'PUT', $aArgs );
+	public function restPOST($endpoint, array $aArgs = [])
+	{
+		return $this->restAPI($endpoint, 'POST', $aArgs);
 	}
 
-	public function restDELETE( $endpoint, array $aArgs = [] ) {
-		return $this->restAPI( $endpoint, 'DELETE', $aArgs );
+	public function restPUT($endpoint, array $aArgs = [])
+	{
+		return $this->restAPI($endpoint, 'PUT', $aArgs);
 	}
 
-	public function restPATCH( $endpoint, array $aArgs = [] ) {
-		return $this->restAPI( $endpoint, 'PATCH', $aArgs );
+	public function restDELETE($endpoint, array $aArgs = [])
+	{
+		return $this->restAPI($endpoint, 'DELETE', $aArgs);
+	}
+
+	public function restPATCH($endpoint, array $aArgs = [])
+	{
+		return $this->restAPI($endpoint, 'PATCH', $aArgs);
 	}
 }
