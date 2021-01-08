@@ -11,7 +11,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class SetupPHPUNIT extends Command
 {
-	protected $commandName = 'wiloke:unittest';
+	protected $commandName = 'make:unittest';
 	protected $commandDesc = 'Setup PHPUNIT test for your project';
 
 	protected $commandArgsType     = 'type';
@@ -27,7 +27,14 @@ class SetupPHPUNIT extends Command
 	protected $commandOptionRestBaseRestBase = 'Provide your Rest Namespace. EG: wiloke/v2. ';
 
 	protected $commandOptionNameSpace     = 'namespace';
-	protected $commandOptionNameSpaceDesc = 'Provide your Project Namespace. EG: Wiloke ';
+	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
+
+	protected $commandOptionApplicationPassword     = 'authpass';
+	protected $commandOptionApplicationPasswordDesc = 'Provide your admin application password';
+
+	protected $commandOptionAdminUsername     = 'admin_username';
+	protected $commandOptionAdminUsernameDesc = 'Provide your admin username';
+
 	/**
 	 * @var Filesystem
 	 */
@@ -61,7 +68,17 @@ class SetupPHPUNIT extends Command
 	 */
 	private $namespace;
 	private $namespacePlaceholder = 'WilokeNamespace';
-	private $aValidTypes = ['themes', 'plugins'];
+	private $aValidTypes          = ['themes', 'plugins'];
+	/**
+	 * @var mixed
+	 */
+	private $adminUsername;
+	private $adminUsernamePlaceholder = 'ADMIN_USERNAME_VALUE';
+	/**
+	 * @var mixed
+	 */
+	private $authPassword;
+	private $authPasswordPlaceholder = 'ADMIN_AUTH_PASS_VALUE';
 
 	protected function configure()
 	{
@@ -94,6 +111,18 @@ class SetupPHPUNIT extends Command
 				null,
 				InputOption::VALUE_OPTIONAL,
 				$this->commandOptionRestBaseRestBase
+			)
+			->addOption(
+				$this->commandOptionApplicationPassword,
+				null,
+				InputOption::VALUE_OPTIONAL,
+				$this->commandOptionApplicationPasswordDesc
+			)
+			->addOption(
+				$this->commandOptionAdminUsername,
+				null,
+				InputOption::VALUE_OPTIONAL,
+				$this->commandOptionAdminUsernameDesc
 			);
 	}
 
@@ -110,6 +139,14 @@ class SetupPHPUNIT extends Command
 
 		if ($this->homeUrl) {
 			$content = str_replace($this->homeUrlPlaceHolder, $this->homeUrl, $content);
+		}
+
+		if ($this->adminUsername) {
+			$content = str_replace($this->adminUsernamePlaceholder, $this->adminUsername, $content);
+		}
+
+		if ($this->authPassword) {
+			$content = str_replace($this->authPasswordPlaceholder, $this->authPassword, $content);
 		}
 
 		$this->oFileSystem->dumpFile('phpunit.xml', $content);
@@ -150,6 +187,8 @@ class SetupPHPUNIT extends Command
 			$this->homeUrl = $oInput->getOption($this->commandOptionHomeUrl);
 			$this->restBase = $oInput->getOption($this->commandOptionRestBase);
 			$this->namespace = $oInput->getOption($this->commandOptionNameSpace);
+			$this->adminUsername = $oInput->getOption($this->commandOptionAdminUsername);
+			$this->authPassword = $oInput->getOption($this->commandOptionApplicationPassword);
 
 			$this->oFileSystem = new Filesystem();
 

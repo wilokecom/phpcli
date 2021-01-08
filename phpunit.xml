@@ -21,5 +21,7 @@
         <ini name="display_startup_errors" value="ON"/>
         <env name="REST_BASE" value="wiloke/v1"/>
         <env name="HOME_URL" value="https://wiloke.com"/>
+        <env name="ADMIN_USERNAME" value="ADMIN_USERNAME_VALUE"/>
+        <env name="ADMIN_AUTH_PASS" value="ADMIN_AUTH_PASS_VALUE"/>
     </php>
 </phpunit>
