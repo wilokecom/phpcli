@@ -35,7 +35,8 @@ site with your administrator account -> Profile -> My Profile -> Create an Appli
 
 EXAMPLES With SUBCOMMANDS
 <pre style="background: black; color: white">
-./vendor/bin/wilokecli make:unittest plugins sample-plugin --homeurl=https://wiloke.com --rb=wiloke/v2
+./vendor/bin/wilokecli make:unittest plugins sample-plugin --homeurl=https://wiloke.com --rb=wiloke/v2 
+--namespace=WilokeListingToolsTests --admin_username=admin --authpass=yourpass
 </pre>
 
 
