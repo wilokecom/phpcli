@@ -4,34 +4,34 @@ namespace WilokeTest;
 
 trait HTTP
 {
-	private $aAuth;
+	protected $aAuth;
 
-	private $aAdminInfo
+	protected $aAdminInfo
 		= [
 			'username' => 'admin'
 		];
 
-	private $isEnableUserLogin;
-	private $oUser;
-	private $userId;
-	private $restBase;
-	private $ajaxUrl;
-	private $isAjax = false;
+	protected $isEnableUserLogin;
+	protected $oUser;
+	protected $userId;
+	protected $restBase;
+	protected $ajaxUrl;
+	protected $isAjax = false;
 
-	private function getAdminId()
+	protected function getAdminId()
 	{
 		$this->oUser = get_user_by('login', $this->aAdminInfo['username']);
 		$this->userId = $this->oUser->ID;
 		return $this;
 	}
 
-	private function setUserLoggedIn()
+	protected function setUserLoggedIn()
 	{
 		wp_set_current_user($this->getAdminId()->userId);
 		return $this;
 	}
 
-	private function configureAPI()
+	protected function configureAPI()
 	{
 		global $aWILOKEGLOBAL;
 		$this->restBase = trailingslashit($aWILOKEGLOBAL['restBaseUrl']);

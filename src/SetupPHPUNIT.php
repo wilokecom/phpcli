@@ -67,7 +67,7 @@ class SetupPHPUNIT extends Command
 	 * @var mixed
 	 */
 	private $namespace;
-	private $namespacePlaceholder = 'WilokeNamespace';
+	private $namespacePlaceholder = 'WilokeTest';
 	private $aValidTypes          = ['themes', 'plugins'];
 	/**
 	 * @var mixed
@@ -162,7 +162,6 @@ class SetupPHPUNIT extends Command
 
 		$content = str_replace($this->typePlaceholder, $this->type, $content);
 		$content = str_replace($this->fileNamePlaceholder, $this->fileName, $content);
-		$content = str_replace($this->namespacePlaceholder, $this->namespace, $content);
 
 		$this->oFileSystem->dumpFile('tests/bootstrap.php', $content);
 	}
