@@ -181,7 +181,7 @@ class SetupPHPUNIT extends Command
 		$this->type = $oInput->getArgument($this->commandArgsType);
 
 		if (!in_array($this->type, $this->aValidTypes)) {
-			$oOutput->writeln('The type must be: themes or plugins', OutputInterface::VERBOSITY_VERY_VERBOSE);
+			$oOutput->writeln('The type must be: themes or plugins', OutputInterface::VERBOSITY_NORMAL);
 		} else {
 			$this->fileName = $oInput->getArgument($this->commandArgsName);
 			$this->homeUrl = $oInput->getOption($this->commandOptionHomeUrl);
@@ -200,8 +200,10 @@ class SetupPHPUNIT extends Command
 				$oOutput->writeln('Wiloke PHPUNIT has been setup successfully');
 			}
 			catch (\Exception $oE) {
-				$oOutput->writeln($oE->getMessage(), OutputInterface::VERBOSITY_VERY_VERBOSE);
+				$oOutput->writeln($oE->getMessage(), OutputInterface::VERBOSITY_NORMAL);
 			}
 		}
+
+		return true;
 	}
 }
