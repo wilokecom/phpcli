@@ -50,3 +50,28 @@ EXAMPLES With SUBCOMMANDS
     },
 }
 </pre>
+
+## Generating Post Skeleton
+Example
+
+<pre>
+./vendor/bin/wilokecli make:post-skeleton app --namespace=WilokeNamespace
+</pre>
+
+<strong style="color:red">app</strong> is a folder that you defined under autoload Psr-4 in composer.json.
+<pre>
+{
+    "autoload": {
+        "psr-4": {
+            "WilokeNamespace\\": "app/"
+        }
+    }
+}
+</pre>
+
+## Generating Message Skeleton
+Example
+
+<pre>
+./vendor/bin/wilokecli make:message-factory app --namespace=WilokeNamespace
+</pre>
