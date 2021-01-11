@@ -7,10 +7,12 @@ require __DIR__ . '/vendor/autoload.php';
 use Symfony\Component\Console\Application;
 use \WilokeCommandLine\SetupPHPUNIT;
 use \WilokeCommandLine\SetupPostSkeleton;
+use \WilokeCommandLine\SetupMessageFactory;
 
 $application = new Application();
 
 # add our commands
 $application->add(new SetupPHPUNIT());
 $application->add(new SetupPostSkeleton());
+$application->add(new SetupMessageFactory());
 $application->run();
