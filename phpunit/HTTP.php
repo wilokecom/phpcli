@@ -1,6 +1,6 @@
 <?php
 
-namespace WilokeTest;
+#namespace WilokeTest;
 
 trait HTTP
 {

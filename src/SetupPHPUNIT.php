@@ -170,8 +170,42 @@ class SetupPHPUNIT extends Command
 	{
 		$content = file_get_contents($this->phpUnitSampleDir . 'HTTP.php');
 
-		$content = str_replace($this->namespacePlaceholder, $this->namespace, $content);
+		if ($this->namespace) {
+			$content = str_replace(
+				[
+					$this->namespacePlaceholder,
+					'#'
+				],
+				[
+					$this->namespace,
+					''
+				],
+				$content
+			);
+		}
+
 		$this->oFileSystem->dumpFile('tests/HTTP.php', $content);
+	}
+
+	private function createCommon()
+	{
+		$content = file_get_contents($this->phpUnitSampleDir . 'Common.php');
+
+		if ($this->namespace) {
+			$content = str_replace(
+				[
+					$this->namespacePlaceholder,
+					'#'
+				],
+				[
+					$this->namespace,
+					''
+				],
+				$content
+			);
+		}
+
+		$this->oFileSystem->dumpFile('tests/Common.php', $content);
 	}
 
 	protected function execute(InputInterface $oInput, OutputInterface $oOutput)
@@ -196,6 +230,7 @@ class SetupPHPUNIT extends Command
 				$this->createPHPUNITXML();
 				$this->createBootstrap();
 				$this->createHTTP();
+				$this->createCommon();
 
 				$oOutput->writeln('Wiloke PHPUNIT has been setup successfully');
 			}
