@@ -1,18 +1,19 @@
 <?php
 
+
 namespace WilokeCommandLine;
 
-use \Symfony\Component\Console\Command\Command;
+
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class SetupPostSkeleton extends CommonController
+class SetupMessageFactory extends CommonController
 {
-	protected $commandName = 'make:post-skeleton';
-	protected $commandDesc = 'Setup Post Skeleton';
+	protected $commandName = 'make:message-factory';
+	protected $commandDesc = 'Setup Message Factory';
 
 	protected $commandAutoloadDir     = 'autoloadDir';
 	protected $commandAutoloadDirDesc = 'Enter "App Directory Name" that you defined in the composer autoload. EG: src or app';
@@ -20,10 +21,7 @@ class SetupPostSkeleton extends CommonController
 	protected $commandOptionNameSpace     = 'namespace';
 	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
 
-	protected $commandOptionFileName     = 'fileName';
-	protected $commandOptionFileNameDesc = 'You can change PostSkeleton to your Filename';
-
-	protected $componentsDir = 'components';
+	protected $componentsDir = 'components/Message';
 
 	/**
 	 * @var Filesystem
@@ -33,17 +31,18 @@ class SetupPostSkeleton extends CommonController
 	/**
 	 * @var mixed
 	 */
-	private $originalFileName = 'PostSkeleton.php';
-	private $fileName         = 'PostSkeleton.php';
+	private $originalFileNames
+		= ['AbstractMessage.php', 'AjaxMessage.php', 'MessageFactory.php', 'NormalMessage.php',
+		   'RestMessage.php', 'ShortcodeMessage.php'];
 
 	/**
 	 * @var mixed
 	 */
-	private   $autoloadDir = 'app';
+	private $autoloadDir = 'app';
 
 	public function setFileDir()
 	{
-		$this->fileDir = 'Illuminate/Skeleton';
+		$this->fileDir = 'Illuminate/Message';
 	}
 
 	protected function configure()
@@ -61,12 +60,6 @@ class SetupPostSkeleton extends CommonController
 				null,
 				InputOption::VALUE_OPTIONAL,
 				$this->commandOptionNameSpaceDesc
-			)
-			->addOption(
-				$this->commandOptionFileName,
-				null,
-				InputOption::VALUE_OPTIONAL,
-				$this->commandOptionFileNameDesc
 			);
 	}
 
@@ -75,24 +68,29 @@ class SetupPostSkeleton extends CommonController
 	 */
 	private function createPostSkeletonComponent()
 	{
-		$this->content = file_get_contents($this->componentsDir . $this->originalFileName);
 		if ($this->namespace) {
 			$this->namespace = $this->generateNamespace();
 		}
 
-		if (empty($this->content)) {
-			throw new \Exception('We could not get ' . $this->originalFileName .
-				' content. Please re-check read permission');
-		}
-		$this->replaceNamespace();
-		$this->autoloadDir = trim($this->autoloadDir, '/') . '/';
-		$fileDirectory = './' . $this->autoloadDir . $this->fileDir;
+		foreach ($this->originalFileNames as $fileName) {
+			$this->content = file_get_contents($this->componentsDir . $fileName);
 
-		if (!$this->oFileSystem->exists($fileDirectory)) {
-			$this->oFileSystem->mkdir($fileDirectory);
-		}
+			if (empty($this->content)) {
+				throw new \Exception('We could not get ' . $fileName .
+					' content. Please re-check read permission');
+			}
 
-		$this->oFileSystem->dumpFile($fileDirectory . '/' . $this->fileName, $this->content);
+			$this->replaceNamespace();
+
+			$this->autoloadDir = trim($this->autoloadDir, '/') . '/';
+			$fileDirectory = './' . $this->autoloadDir . $this->fileDir;
+
+			if (!$this->oFileSystem->exists($fileDirectory)) {
+				$this->oFileSystem->mkdir($fileDirectory);
+			}
+
+			$this->oFileSystem->dumpFile($fileDirectory . '/' . $fileName, $this->content);
+		}
 	}
 
 	/**
@@ -103,7 +101,7 @@ class SetupPostSkeleton extends CommonController
 	protected function execute(InputInterface $oInput, OutputInterface $oOutput): ?int
 	{
 		$this->setFileDir();
-		$this->componentsDir = dirname(dirname(__FILE__)) . '/components/';
+		$this->componentsDir = dirname(dirname(__FILE__)) . '/' . $this->componentsDir . '/';
 		$this->autoloadDir = $oInput->getArgument($this->commandAutoloadDir);
 		$this->oFileSystem = new Filesystem();
 
@@ -113,11 +111,6 @@ class SetupPostSkeleton extends CommonController
 			return false;
 		} else {
 			$this->namespace = $oInput->getOption($this->commandOptionNameSpace);
-			$fileName = $oInput->getOption($this->commandOptionFileName);
-
-			if (!empty($fileName)) {
-				$this->fileName = strpos($fileName, '.php') === false ? $fileName . '.php' : $fileName;
-			}
 
 			try {
 				$this->createPostSkeletonComponent();
