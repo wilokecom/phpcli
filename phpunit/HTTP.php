@@ -49,6 +49,22 @@ trait HTTP
 		return $this;
 	}
 
+	/**
+	 * @param $object
+	 * @param $methodName
+	 * @param array $aParams
+	 * @return mixed
+	 * @throws \ReflectionException
+	 */
+	public function invokeMethod($object, $methodName, array $aParams = [])
+	{
+		$reflection = new \ReflectionClass(get_class($object));
+		$method = $reflection->getMethod($methodName);
+		$method->setAccessible(true);
+
+		return $method->invokeArgs($object, $aParams);
+	}
+
 	public function ajaxPost(array $aArgs)
 	{
 		$this->isAjax = true;
@@ -75,7 +91,7 @@ trait HTTP
 		$url = $this->isAjax ? $this->ajaxUrl : $this->restBase . trailingslashit($endpoint);
 
 		if ($method !== 'POST' && !empty($aArgs)) {
-			$url = add_query_args($aArgs, $url);
+			$url = add_query_arg($aArgs, $url);
 		}
 
 		curl_setopt($ch, CURLOPT_URL, $url);
