@@ -32,4 +32,22 @@ class CommonController extends TestCase
 
 		return $method->invokeArgs($object, $aParams);
 	}
+
+	public function setPrivateProperty($object, $propertyName, $params)
+	{
+		$reflection = new \ReflectionClass(get_class($object));
+		$method = $reflection->getProperty($propertyName);
+		$method->setAccessible(true);
+
+		$method->setValue( $object, $params);
+	}
+
+	public function getPrivateProperty($object, $propertyName)
+	{
+		$reflection = new \ReflectionClass(get_class($object));
+		$method = $reflection->getProperty($propertyName);
+		$method->setAccessible(true);
+
+		return $method->getValue($object);
+	}
 }
