@@ -189,7 +189,7 @@ class SetupPHPUNIT extends Command
 
 	private function createCommon()
 	{
-		$content = file_get_contents($this->phpUnitSampleDir . 'Common.php');
+		$content = file_get_contents($this->phpUnitSampleDir . 'CommonController.php');
 
 		if ($this->namespace) {
 			$content = str_replace(
