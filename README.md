@@ -75,3 +75,32 @@ Example
 <pre>
 ./vendor/bin/wilokecli make:message-factory app --namespace=WilokeNamespace
 </pre>
+
+## Generating GrumPHP
+
+<h3>Installing grumphp and php-cs-fixer</h3>
+<div style="border: 1px solid #fff; padding: 20px">
+Run the following command line:
+<pre>
+composer require phpro/grumphp friendsofphp/php-cs-fixer --dev
+</pre>
+
+Or you can also add the following code to composer.json
+<pre>
+"require-dev": {
+    "phpro/grumphp": "^1.3",
+    "friendsofphp/php-cs-fixer": "^2.17"
+}
+</pre>
+
+then run 
+
+<pre>
+composer update
+</pre>
+</div>
+
+<h3>Generating Wiloke grumphp configuration</h3>
+<pre>
+./vendor/bin/wilokecli make:grumphp
+</pre>
