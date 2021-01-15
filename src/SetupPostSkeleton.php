@@ -26,24 +26,15 @@ class SetupPostSkeleton extends CommonController
 	protected $componentsDir = 'components';
 
 	/**
-	 * @var Filesystem
-	 */
-	private $oFileSystem;
-
-	/**
 	 * @var mixed
 	 */
 	private $originalFileName = 'PostSkeleton.php';
 	private $fileName         = 'PostSkeleton.php';
 
-	/**
-	 * @var mixed
-	 */
-	private   $autoloadDir = 'app';
 
-	public function setFileDir()
+	public function setOriginalRelativeDir()
 	{
-		$this->fileDir = 'Illuminate/Skeleton';
+		$this->originalRelativeFileDir = 'Illuminate/Skeleton';
 	}
 
 	protected function configure()
@@ -76,17 +67,15 @@ class SetupPostSkeleton extends CommonController
 	private function createPostSkeletonComponent()
 	{
 		$this->content = file_get_contents($this->componentsDir . $this->originalFileName);
-		if ($this->namespace) {
-			$this->namespace = $this->generateNamespace();
-		}
+		$this->generateNamespace();
 
 		if (empty($this->content)) {
 			throw new \Exception('We could not get ' . $this->originalFileName .
 				' content. Please re-check read permission');
 		}
 		$this->replaceNamespace();
-		$this->autoloadDir = trim($this->autoloadDir, '/') . '/';
-		$fileDirectory = './' . $this->autoloadDir . $this->fileDir;
+
+		$fileDirectory = $this->getAutoloadDir() . $this->relativeTargetFileDir;
 
 		if (!$this->oFileSystem->exists($fileDirectory)) {
 			$this->oFileSystem->mkdir($fileDirectory);
@@ -102,7 +91,7 @@ class SetupPostSkeleton extends CommonController
 	 */
 	protected function execute(InputInterface $oInput, OutputInterface $oOutput): ?int
 	{
-		$this->setFileDir();
+		$this->setRelativeTargetFileDir();
 		$this->componentsDir = dirname(dirname(__FILE__)) . '/components/';
 		$this->autoloadDir = $oInput->getArgument($this->commandAutoloadDir);
 		$this->oFileSystem = new Filesystem();
@@ -112,7 +101,7 @@ class SetupPostSkeleton extends CommonController
 
 			return false;
 		} else {
-			$this->namespace = $oInput->getOption($this->commandOptionNameSpace);
+			$this->originalNamespace = $oInput->getOption($this->commandOptionNameSpace);
 			$fileName = $oInput->getOption($this->commandOptionFileName);
 
 			if (!empty($fileName)) {

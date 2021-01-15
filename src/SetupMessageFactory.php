@@ -24,25 +24,15 @@ class SetupMessageFactory extends CommonController
 	protected $componentsDir = 'components/Message';
 
 	/**
-	 * @var Filesystem
-	 */
-	private $oFileSystem;
-
-	/**
 	 * @var mixed
 	 */
 	private $originalFileNames
 		= ['AbstractMessage.php', 'AjaxMessage.php', 'MessageFactory.php', 'NormalMessage.php',
 		   'RestMessage.php', 'ShortcodeMessage.php'];
 
-	/**
-	 * @var mixed
-	 */
-	private $autoloadDir = 'app';
-
-	public function setFileDir()
+	public function setOriginalRelativeDir()
 	{
-		$this->fileDir = 'Illuminate/Message';
+		$this->originalRelativeFileDir = 'Illuminate/Message';
 	}
 
 	protected function configure()
@@ -68,9 +58,7 @@ class SetupMessageFactory extends CommonController
 	 */
 	private function createPostSkeletonComponent()
 	{
-		if ($this->namespace) {
-			$this->namespace = $this->generateNamespace();
-		}
+		$this->generateNamespace();
 
 		foreach ($this->originalFileNames as $fileName) {
 			$this->content = file_get_contents($this->componentsDir . $fileName);
@@ -83,7 +71,7 @@ class SetupMessageFactory extends CommonController
 			$this->replaceNamespace();
 
 			$this->autoloadDir = trim($this->autoloadDir, '/') . '/';
-			$fileDirectory = './' . $this->autoloadDir . $this->fileDir;
+			$fileDirectory = './' . $this->autoloadDir . $this->relativeTargetFileDir;
 
 			if (!$this->oFileSystem->exists($fileDirectory)) {
 				$this->oFileSystem->mkdir($fileDirectory);
@@ -100,7 +88,7 @@ class SetupMessageFactory extends CommonController
 	 */
 	protected function execute(InputInterface $oInput, OutputInterface $oOutput): ?int
 	{
-		$this->setFileDir();
+		$this->setRelativeTargetFileDir();
 		$this->componentsDir = dirname(dirname(__FILE__)) . '/' . $this->componentsDir . '/';
 		$this->autoloadDir = $oInput->getArgument($this->commandAutoloadDir);
 		$this->oFileSystem = new Filesystem();
@@ -110,7 +98,7 @@ class SetupMessageFactory extends CommonController
 
 			return false;
 		} else {
-			$this->namespace = $oInput->getOption($this->commandOptionNameSpace);
+			$this->originalNamespace = $oInput->getOption($this->commandOptionNameSpace);
 
 			try {
 				$this->createPostSkeletonComponent();

@@ -8,6 +8,7 @@ use Symfony\Component\Console\Application;
 use \WilokeCommandLine\SetupPHPUNIT;
 use \WilokeCommandLine\SetupPostSkeleton;
 use \WilokeCommandLine\SetupMessageFactory;
+use \WilokeCommandLine\SetupQuery;
 
 $application = new Application();
 
@@ -15,4 +16,5 @@ $application = new Application();
 $application->add(new SetupPHPUNIT());
 $application->add(new SetupPostSkeleton());
 $application->add(new SetupMessageFactory());
+$application->add(new SetupQuery());
 $application->run();
