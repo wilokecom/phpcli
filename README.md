@@ -76,6 +76,23 @@ Example
 ./vendor/bin/wilokecli make:message-factory app --namespace=WilokeNamespace
 </pre>
 
+## Generating Query
+<pre>
+./vendor/bin/wilokecli make:query --namespace=WilokeNamespace
+</pre>
+
+## Generating Shortcode Structure
+Example
+
+<pre>
+./vendor/bin/wilokecli make:shortcode MyShortcodeClass --namespace=WilokeNamespace
+</pre>
+
+## Generating Query
+<pre>
+./vendor/bin/wilokecli make:query --namespace=WilokeNamespace
+</pre>
+
 ## Generating GrumPHP
 
 <h3>Installing grumphp and php-cs-fixer</h3>

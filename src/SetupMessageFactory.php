@@ -18,17 +18,17 @@ class SetupMessageFactory extends CommonController
 	protected $commandAutoloadDir     = 'autoloadDir';
 	protected $commandAutoloadDirDesc = 'Enter "App Directory Name" that you defined in the composer autoload. EG: src or app';
 
-	protected $commandOptionNameSpace     = 'namespace';
-	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
-
-	protected $componentsDir = 'components/Message';
-
 	/**
 	 * @var mixed
 	 */
 	private $originalFileNames
 		= ['AbstractMessage.php', 'AjaxMessage.php', 'MessageFactory.php', 'NormalMessage.php',
 		   'RestMessage.php', 'ShortcodeMessage.php'];
+
+	public function setRelativeComponentDir()
+	{
+		$this->relativeComponentDir = 'Message';
+	}
 
 	public function setOriginalRelativeDir()
 	{
@@ -61,7 +61,7 @@ class SetupMessageFactory extends CommonController
 		$this->generateNamespace();
 
 		foreach ($this->originalFileNames as $fileName) {
-			$this->content = file_get_contents($this->componentsDir . $fileName);
+			$this->content = file_get_contents($this->relativeComponentDir . $fileName);
 
 			if (empty($this->content)) {
 				throw new \Exception('We could not get ' . $fileName .
@@ -89,7 +89,7 @@ class SetupMessageFactory extends CommonController
 	protected function execute(InputInterface $oInput, OutputInterface $oOutput): ?int
 	{
 		$this->setRelativeTargetFileDir();
-		$this->componentsDir = dirname(dirname(__FILE__)) . '/' . $this->componentsDir . '/';
+		$this->relativeComponentDir = dirname(dirname(__FILE__)) . '/' . $this->relativeComponentDir . '/';
 		$this->autoloadDir = $oInput->getArgument($this->commandAutoloadDir);
 		$this->oFileSystem = new Filesystem();
 

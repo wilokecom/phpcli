@@ -13,10 +13,20 @@ abstract class CommonController extends Command
 	protected $namespace;
 	protected $content;
 	protected $relativeTargetFileDir;
-	protected $componentsDir;
-	protected $msg            = 'Congrats! The component has been created successfully';
-	protected $helperMsg      = 'The setup has been cancelled due to the component is already existed';
-	protected $helperQuestion = 'The component has been setup already, Do you want to override it?';
+	protected $relativeComponentDir;
+	protected $msg                        = 'Congrats! The component has been created successfully';
+	protected $helperMsg                  = 'The setup has been cancelled due to the component is already existed';
+	protected $helperQuestion             = 'The component has been setup already, Do you want to override it?';
+	protected $commandOptionNameSpace     = 'namespace';
+	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
+	protected $classNamePlaceholder       = 'WilokeClass';
+	protected $className;
+
+	protected $commandFileName     = 'filename';
+	protected $commandFileNameDesc = 'Enter your shortcode Filename';
+
+	protected $commonClassName     = 'classname';
+	protected $commonClassNameDesc = 'Enter your shortcode Class name';
 
 	protected $oInput;
 	protected $oOutput;
@@ -35,6 +45,8 @@ abstract class CommonController extends Command
 
 	public abstract function setOriginalRelativeDir();
 
+	public abstract function setRelativeComponentDir();
+
 	public function setRelativeTargetFileDir($dir = ''): CommonController
 	{
 		if (empty($dir)) {
@@ -52,6 +64,12 @@ abstract class CommonController extends Command
 		$this->oOutput = $oOutput;
 		$this->setOriginalRelativeDir();
 		$this->setRelativeTargetFileDir();
+		$this->setRelativeComponentDir();
+
+		if ($namespace = $oInput->getOption($this->commandOptionNameSpace)) {
+			$this->originalNamespace = $namespace;
+		}
+
 		$this->oFileSystem = new Filesystem();
 
 		return $this;
@@ -135,19 +153,35 @@ abstract class CommonController extends Command
 		return $this->namespace;
 	}
 
-	protected function getComponentsDir($componentDir = ''): string
+	protected function getRelativeComponentDir($componentDir = ''): string
 	{
-		return dirname(dirname(__FILE__)) . '/components/' . ($componentDir ? $componentDir : $this->componentsDir) . '/';
+		$componentDir = $componentDir ? $componentDir : $this->relativeComponentDir;
+
+		if (empty($componentDir)) {
+			return dirname(dirname(__FILE__)) . '/components/';
+		}
+
+		return dirname(dirname(__FILE__)) . '/components/' . $componentDir . '/';
 	}
 
-	protected function dummyFile($fileDir, $target, $namespace = ''): bool
+	protected function dummyFile($fileDir, $target, $namespace = '', $targetFilename = ''): bool
 	{
 		if (empty($namespace)) {
 			$namespace = $this->generateNamespace();
 		}
 
-		$aPasteFileDir = explode('/', $fileDir);
-		$filename = end($aPasteFileDir);
+		if (empty($targetFilename)) {
+			$aPasteFileDir = explode('/', $fileDir);
+			$filename = end($aPasteFileDir);
+		} else {
+			$filename = $targetFilename;
+		}
+
+		$target = $this->untrailingslashit($target);
+		if (strpos($target, $this->autoloadDir) !== 0) {
+			$target = $this->autoloadDir . '/' . $target;
+		}
+
 		$target = $this->trailingslashit($target);
 
 		if (!empty($this->originalNamespace)) {
@@ -200,12 +234,14 @@ abstract class CommonController extends Command
 			$this->content = str_replace(
 				[
 					$this->namespacePlaceholder,
+					'class ' . $this->classNamePlaceholder,
 					'#namespace',
 					'WilokeOriginalNamespace',
 					'#use'
 				],
 				[
 					$namespace,
+					'class ' . $this->className,
 					'namespace',
 					$this->originalNamespace,
 					'use'
