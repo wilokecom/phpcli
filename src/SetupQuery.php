@@ -13,7 +13,6 @@ class SetupQuery extends CommonController
 {
 	protected $commandName                = 'make:query';
 	protected $commandDesc                = 'Setup Query based on Strategy pattern';
-	protected $componentsDir              = 'Query';
 	protected $commandOptionNameSpace     = 'namespace';
 	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
 	protected $helpersRelativeDir         = 'Illuminate/Helpers';
@@ -23,6 +22,11 @@ class SetupQuery extends CommonController
 	public function setOriginalRelativeDir()
 	{
 		$this->originalRelativeFileDir = 'Illuminate/Query';
+	}
+
+	public function setRelativeComponentDir()
+	{
+		$this->relativeComponentDir = 'Query';
 	}
 
 	public function configure()
@@ -56,7 +60,7 @@ class SetupQuery extends CommonController
 		}
 
 		$this->dummyFile(
-			$this->trailingslashit($this->getComponentsDir($this->stringHelperComponentDir)) . $this->stringHelperFilename,
+			$this->trailingslashit($this->getRelativeComponentDir($this->stringHelperComponentDir)) . $this->stringHelperFilename,
 			$this->getAutoloadDir() . $this->relativeTargetFileDir
 		);
 
@@ -75,7 +79,7 @@ class SetupQuery extends CommonController
 			}
 		}
 
-		$this->recursiveCopy($this->getComponentsDir(), $this->getAbsFileDir());
+		$this->recursiveCopy($this->getRelativeComponentDir(), $this->getAbsFileDir());
 
 		return true;
 	}
@@ -84,11 +88,6 @@ class SetupQuery extends CommonController
 	public function execute(InputInterface $oInput, OutputInterface $oOutput)
 	{
 		$this->commonConfiguration($oInput, $oOutput);
-
-		if ($namespace = $oInput->getOption($this->commandOptionNameSpace)) {
-			$this->originalNamespace = $namespace;
-		}
-
 		$this->copyQueryFolder();
 		$this->createStringHelper();
 		$this->outputMsg();

@@ -10,6 +10,7 @@ use \WilokeCommandLine\SetupPostSkeleton;
 use \WilokeCommandLine\SetupMessageFactory;
 use \WilokeCommandLine\SetupQuery;
 use \WilokeCommandLine\SetupGrumPHP;
+use \WilokeCommandLine\SetupShortcode;
 
 $application = new Application();
 
@@ -19,4 +20,5 @@ $application->add(new SetupPostSkeleton());
 $application->add(new SetupMessageFactory());
 $application->add(new SetupQuery());
 $application->add(new SetupGrumPHP());
+$application->add(new SetupShortcode());
 $application->run();

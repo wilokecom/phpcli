@@ -23,14 +23,16 @@ class SetupPostSkeleton extends CommonController
 	protected $commandOptionFileName     = 'fileName';
 	protected $commandOptionFileNameDesc = 'You can change PostSkeleton to your Filename';
 
-	protected $componentsDir = 'components';
-
 	/**
 	 * @var mixed
 	 */
 	private $originalFileName = 'PostSkeleton.php';
 	private $fileName         = 'PostSkeleton.php';
 
+	public function setRelativeComponentDir()
+	{
+		$this->relativeComponentDir = '';
+	}
 
 	public function setOriginalRelativeDir()
 	{
@@ -66,7 +68,7 @@ class SetupPostSkeleton extends CommonController
 	 */
 	private function createPostSkeletonComponent()
 	{
-		$this->content = file_get_contents($this->componentsDir . $this->originalFileName);
+		$this->content = file_get_contents($this->relativeComponentDir . $this->originalFileName);
 		$this->generateNamespace();
 
 		if (empty($this->content)) {
@@ -92,7 +94,7 @@ class SetupPostSkeleton extends CommonController
 	protected function execute(InputInterface $oInput, OutputInterface $oOutput): ?int
 	{
 		$this->setRelativeTargetFileDir();
-		$this->componentsDir = dirname(dirname(__FILE__)) . '/components/';
+		$this->relativeComponentDir = dirname(dirname(__FILE__)) . '/components/';
 		$this->autoloadDir = $oInput->getArgument($this->commandAutoloadDir);
 		$this->oFileSystem = new Filesystem();
 
