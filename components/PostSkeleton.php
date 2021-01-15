@@ -65,7 +65,7 @@ class PostSkeleton
 			array_map([$this, 'getItem'], $pluck);
 		} else {
 			$pluck = trim($pluck);
-			$method = FunctionHelper::makeFunc($pluck);
+			$method = StringHelper::makeFunc($pluck);
 			if (method_exists(self::$_self, $method)) {
 				$this->aCurrentResponseInLoop[$pluck] = $this->{$method}();
 			} else {
