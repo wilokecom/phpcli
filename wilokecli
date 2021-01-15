@@ -9,6 +9,7 @@ use \WilokeCommandLine\SetupPHPUNIT;
 use \WilokeCommandLine\SetupPostSkeleton;
 use \WilokeCommandLine\SetupMessageFactory;
 use \WilokeCommandLine\SetupQuery;
+use \WilokeCommandLine\SetupGrumPHP;
 
 $application = new Application();
 
@@ -17,4 +18,5 @@ $application->add(new SetupPHPUNIT());
 $application->add(new SetupPostSkeleton());
 $application->add(new SetupMessageFactory());
 $application->add(new SetupQuery());
+$application->add(new SetupGrumPHP());
 $application->run();
