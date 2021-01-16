@@ -205,7 +205,7 @@ class SetupPHPUNIT extends Command
 			);
 		}
 
-		$this->oFileSystem->dumpFile('tests/Common.php', $content);
+		$this->oFileSystem->dumpFile('tests/CommonController.php', $content);
 	}
 
 	protected function execute(InputInterface $oInput, OutputInterface $oOutput)
