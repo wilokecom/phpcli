@@ -28,7 +28,7 @@ class SetupShortcode extends CommonController
 
 	public function setRelativeComponentDir()
 	{
-		$this->relativeComponentDir = 'Shortcode';
+		$this->relativeComponentDir = 'Shortcodes';
 	}
 
 	public function setOriginalRelativeDir()
