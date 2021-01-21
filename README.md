@@ -88,6 +88,12 @@ Example
 ./vendor/bin/wilokecli make:shortcode MyShortcodeClass --namespace=WilokeNamespace
 </pre>
 
+## Generating Elementor
+
+<pre>
+./vendor/bin/wilokecli make:elementor MyElementorClass --namespace=WilokeNamespace
+</pre>
+
 ## Generating Query
 <pre>
 ./vendor/bin/wilokecli make:query --namespace=WilokeNamespace

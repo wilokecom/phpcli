@@ -11,6 +11,7 @@ use \WilokeCommandLine\SetupMessageFactory;
 use \WilokeCommandLine\SetupQuery;
 use \WilokeCommandLine\SetupGrumPHP;
 use \WilokeCommandLine\SetupShortcode;
+use \WilokeCommandLine\SetupElementor;
 
 $application = new Application();
 
@@ -21,4 +22,5 @@ $application->add(new SetupMessageFactory());
 $application->add(new SetupQuery());
 $application->add(new SetupGrumPHP());
 $application->add(new SetupShortcode());
+$application->add(new SetupElementor());
 $application->run();
