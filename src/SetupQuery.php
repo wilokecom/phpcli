@@ -17,7 +17,9 @@ class SetupQuery extends CommonController
 	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
 	protected $helpersRelativeDir         = 'Illuminate/Helpers';
 	protected $stringHelperFilename       = 'StringHelper.php';
-	protected $stringHelperComponentDir   = 'Helpers';
+	protected $helperComponentDir         = 'Helpers';
+	protected $skeletonComponentDir       = 'Skeleton';
+	protected $skeletonRelativeDir        = 'Illuminate/Skeleton';
 
 	public function setOriginalRelativeDir()
 	{
@@ -41,7 +43,18 @@ class SetupQuery extends CommonController
 			);
 	}
 
-	protected function createStringHelper(): bool
+	protected function copyQueryFolder(): bool
+	{
+		if (!$this->oFileSystem->exists($this->getAbsFileDir())) {
+			$this->oFileSystem->mkdir($this->getAbsFileDir());
+		}
+
+		$this->recursiveCopy($this->getRelativeComponentDir(), $this->getAbsFileDir());
+
+		return true;
+	}
+
+	protected function copyHelperFolder(): bool
 	{
 		$this->setRelativeTargetFileDir($this->helpersRelativeDir);
 
@@ -59,37 +72,29 @@ class SetupQuery extends CommonController
 			}
 		}
 
-		$this->dummyFile(
-			$this->trailingslashit($this->getRelativeComponentDir($this->stringHelperComponentDir)) . $this->stringHelperFilename,
-			$this->getAutoloadDir() . $this->relativeTargetFileDir
-		);
+		$this->recursiveCopy($this->getRelativeComponentDir($this->helperComponentDir), $this->getAbsFileDir());
 
 		return true;
 	}
 
-	protected function copyQueryFolder(): bool
+	protected function copySkeletonFolder(): bool
 	{
+		$this->setRelativeTargetFileDir($this->skeletonRelativeDir);
 		if (!$this->oFileSystem->exists($this->getAbsFileDir())) {
 			$this->oFileSystem->mkdir($this->getAbsFileDir());
 		}
 
-		if ($this->oFileSystem->exists($this->trailingslashit($this->getAbsFileDir()) . 'AQuery.php')) {
-			if (!$this->isContinue()) {
-				return true;
-			}
-		}
-
-		$this->recursiveCopy($this->getRelativeComponentDir(), $this->getAbsFileDir());
+		$this->recursiveCopy($this->getRelativeComponentDir($this->skeletonComponentDir), $this->getAbsFileDir());
 
 		return true;
 	}
-
 
 	public function execute(InputInterface $oInput, OutputInterface $oOutput)
 	{
 		$this->commonConfiguration($oInput, $oOutput);
 		$this->copyQueryFolder();
-		$this->createStringHelper();
+		$this->copyHelperFolder();
+		$this->copySkeletonFolder();
 		$this->outputMsg();
 	}
 }

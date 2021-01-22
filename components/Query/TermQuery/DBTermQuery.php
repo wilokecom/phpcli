@@ -7,7 +7,7 @@
 #use WilokeOriginalNamespace\Illuminate\Query\IQuery;
 #use WilokeOriginalNamespace\Illuminate\Query\IResponse;
 
-class DBQuery implements IQuery
+class DBTermQuery implements IQuery
 {
 	private $aArgs;
 	private $oQuery;
@@ -32,22 +32,17 @@ class DBQuery implements IQuery
 
 	public function query(): array
 	{
-		$query = new \WP_Query($this->aArgs);
-		$this->oQuery = $query;
+		$aTerms = get_terms($this->aArgs);
 		$aResponse = [];
 
-		if (!$query->have_posts()) {
-			wp_reset_postdata();
-
+		if (is_wp_error($aTerms) || empty($aTerms)) {
 			return $aResponse;
 		}
 
-		while ($query->have_posts()) {
-			$query->the_post();
-			$aResponse[] = $this->oResponse->render($query->post);
+		foreach ($aTerms as $oTerm) {
+			$aResponse[] = $this->oResponse->render($oTerm);
 		}
 
-		wp_reset_postdata();
 		return $aResponse;
 	}
 

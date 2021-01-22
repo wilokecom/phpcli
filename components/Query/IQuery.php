@@ -1,8 +1,6 @@
 <?php
 
-
 #namespace WilokeTest;
-
 
 interface IQuery
 {
@@ -10,7 +8,7 @@ interface IQuery
 
 	public function setResponse(IResponse $oResponse): IQuery;
 
-	public function getQuery(): \WP_Query;
+	public function getQuery();
 
 	public function query(): array;
 }

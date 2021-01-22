@@ -1,8 +1,11 @@
 <?php
 
+
 #namespace WilokeTest;
 
+
 #use WilokeOriginalNamespace\Helpers\StringHelper;
+#use WilokeOriginalNamespace\Illuminate\Query\IQueryBuilder;
 
 class QueryBuilder implements IQueryBuilder
 {
@@ -19,7 +22,6 @@ class QueryBuilder implements IQueryBuilder
 
 		return $this;
 	}
-
 
 	public function parseArgs(): IQueryBuilder
 	{

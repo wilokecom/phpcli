@@ -1,8 +1,6 @@
 <?php
 
-
 #namespace WilokeTest;
-
 
 class AQuery
 {

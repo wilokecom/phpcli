@@ -184,6 +184,14 @@ abstract class CommonController extends Command
 
 		$target = $this->trailingslashit($target);
 
+		if ($this->oFileSystem->exists($target . $filename)) {
+			$msg = sprintf('%s was not being override', $filename);
+			$question = sprintf('Do you want to override %s under %s folder', $filename, $target);
+			if (!$this->isContinue($msg, $question)) {
+				return true;
+			}
+		}
+
 		if (!empty($this->originalNamespace)) {
 			$this->content = file_get_contents($fileDir);
 			$this->replaceNamespace($namespace);
@@ -205,7 +213,8 @@ abstract class CommonController extends Command
 			$namespace = $this->generateNamespace();
 		}
 
-		foreach ($aFiles as $fileDir) {
+		foreach ($aFiles as $order => $fileDir) {
+
 			$aPasteFileDir = explode('/', $fileDir);
 			$file = end($aPasteFileDir);
 
@@ -221,8 +230,7 @@ abstract class CommonController extends Command
 					$namespace .= '\\' . $folder;
 				}
 
-				return array_map([$this, 'recursiveCopy'], [$originalDir . $folder], [$targetDir . $folder],
-					[$namespace]);
+				array_map([$this, 'recursiveCopy'], [$originalDir . $folder], [$targetDir . $folder], [$namespace]);
 			}
 		}
 	}

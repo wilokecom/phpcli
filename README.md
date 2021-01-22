@@ -94,11 +94,6 @@ Example
 ./vendor/bin/wilokecli make:elementor MyElementorClass --namespace=WilokeNamespace
 </pre>
 
-## Generating Query
-<pre>
-./vendor/bin/wilokecli make:query --namespace=WilokeNamespace
-</pre>
-
 ## Generating GrumPHP
 
 <h3>Installing grumphp and php-cs-fixer</h3>
