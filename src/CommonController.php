@@ -223,7 +223,7 @@ abstract class CommonController extends Command
 			} else {
 				$folder = $file;
 				if (!$this->oFileSystem->exists($targetDir . $folder)) {
-					$this->oFileSystem->mkdir($targetDir . $folder);
+					$this->oFileSystem->mkdir($targetDir . $folder, 755);
 				}
 
 				if (!empty($namespace)) {
