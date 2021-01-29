@@ -46,7 +46,7 @@ class SetupQuery extends CommonController
 	protected function copyQueryFolder(): bool
 	{
 		if (!$this->oFileSystem->exists($this->getAbsFileDir())) {
-			$this->oFileSystem->mkdir($this->getAbsFileDir());
+			$this->oFileSystem->mkdir($this->getAbsFileDir(), 755);
 		}
 
 		$this->recursiveCopy($this->getRelativeComponentDir(), $this->getAbsFileDir());
@@ -59,7 +59,7 @@ class SetupQuery extends CommonController
 		$this->setRelativeTargetFileDir($this->helpersRelativeDir);
 
 		if (!$this->oFileSystem->exists($this->getAbsFileDir())) {
-			$this->oFileSystem->mkdir($this->getAbsFileDir());
+			$this->oFileSystem->mkdir($this->getAbsFileDir(), 755);
 		}
 
 		if ($this->oFileSystem->exists($this->trailingslashit($this->getAbsFileDir()) .
@@ -81,7 +81,7 @@ class SetupQuery extends CommonController
 	{
 		$this->setRelativeTargetFileDir($this->skeletonRelativeDir);
 		if (!$this->oFileSystem->exists($this->getAbsFileDir())) {
-			$this->oFileSystem->mkdir($this->getAbsFileDir());
+			$this->oFileSystem->mkdir($this->getAbsFileDir(), 755);
 		}
 
 		$this->recursiveCopy($this->getRelativeComponentDir($this->skeletonComponentDir), $this->getAbsFileDir());

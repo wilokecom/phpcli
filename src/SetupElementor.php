@@ -20,6 +20,7 @@ class SetupElementor extends CommonController
 	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
 
 	protected $originalFilename = 'SampleElementor.php';
+	protected $configFilename   = 'config.php';
 
 	/**
 	 * @var mixed
@@ -56,7 +57,7 @@ class SetupElementor extends CommonController
 	protected function createShortcode(): bool
 	{
 		if (!$this->oFileSystem->exists($this->getAbsFileDir())) {
-			$this->oFileSystem->mkdir($this->getAbsFileDir());
+			$this->oFileSystem->mkdir($this->getAbsFileDir(), 755);
 		}
 
 		if ($this->oFileSystem->exists($this->trailingslashit($this->getAbsFileDir()) . $this->filename)) {
@@ -74,18 +75,29 @@ class SetupElementor extends CommonController
 			$this->filename
 		);
 
-
 		return true;
 	}
 
+	protected function createConfig()
+	{
+		$content = file_get_contents($this->getRelativeComponentDir() . $this->configFilename);
+
+		$this->oFileSystem->dumpFile(
+			$this->trailingslashit($this->relativeTargetFileDir) . $this->configFilename,
+			$content
+		);
+	}
 
 	public function execute(InputInterface $oInput, OutputInterface $oOutput)
 	{
 		$this->commonConfiguration($oInput, $oOutput);
 		$this->className = $oInput->getArgument($this->commonClassName);
 		$this->filename = $this->className . '.php';
+		$this->originalRelativeFileDir = $this->trailingslashit($this->originalRelativeFileDir) . $this->className;
+		$this->relativeTargetFileDir = $this->trailingslashit($this->relativeTargetFileDir) . $this->className;
 
 		$this->createShortcode();
+//		$this->createConfig();
 		$this->outputMsg();
 	}
 }
