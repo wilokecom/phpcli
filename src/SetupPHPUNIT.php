@@ -35,6 +35,9 @@ class SetupPHPUNIT extends Command
 	protected $commandOptionAdminUsername     = 'admin_username';
 	protected $commandOptionAdminUsernameDesc = 'Provide your admin username';
 
+	protected $commandOptionAdminPassword     = 'admin_password';
+	protected $commandOptionAdminPasswordDesc = 'Provide your admin password';
+
 	/**
 	 * @var Filesystem
 	 */
@@ -79,6 +82,11 @@ class SetupPHPUNIT extends Command
 	 */
 	private $authPassword;
 	private $authPasswordPlaceholder = 'ADMIN_AUTH_PASS_VALUE';
+	/**
+	 * @var mixed
+	 */
+	private $adminPassword;
+	private $adminPasswordPlaceholder = 'ADMIN_PASSWORD_VALUE';
 
 	protected function configure()
 	{
@@ -123,6 +131,12 @@ class SetupPHPUNIT extends Command
 				null,
 				InputOption::VALUE_OPTIONAL,
 				$this->commandOptionAdminUsernameDesc
+			)
+			->addOption(
+				$this->commandOptionAdminPassword,
+				null,
+				InputOption::VALUE_OPTIONAL,
+				$this->commandOptionAdminPasswordDesc
 			);
 	}
 
@@ -143,6 +157,10 @@ class SetupPHPUNIT extends Command
 
 		if ($this->adminUsername) {
 			$content = str_replace($this->adminUsernamePlaceholder, $this->adminUsername, $content);
+		}
+
+		if ($this->adminPassword) {
+			$content = str_replace($this->adminPasswordPlaceholder, $this->adminPassword, $content);
 		}
 
 		if ($this->authPassword) {
@@ -222,6 +240,7 @@ class SetupPHPUNIT extends Command
 			$this->restBase = $oInput->getOption($this->commandOptionRestBase);
 			$this->namespace = $oInput->getOption($this->commandOptionNameSpace);
 			$this->adminUsername = $oInput->getOption($this->commandOptionAdminUsername);
+			$this->adminPassword = $oInput->getOption($this->commandOptionAdminPassword);
 			$this->authPassword = $oInput->getOption($this->commandOptionApplicationPassword);
 
 			$this->oFileSystem = new Filesystem();

@@ -36,6 +36,11 @@ trait HTTP
 
 	protected function restLogin($account = '')
 	{
+		return $this->restLogin($account);
+	}
+
+	protected function ajaxLogin($account = '')
+	{
 		$curl = curl_init();
 
 		$aHeader = [
@@ -188,7 +193,7 @@ trait HTTP
 		curl_setopt($ch, CURLOPT_URL, $url);
 
 		if ($this->isEnableUserLogin && !$this->isAjax) {
-			curl_setopt($ch, CURLOPT_USERPWD, $this->aCurrentUser['username'] . ':' . $this->aCurrentUser['password']);
+			curl_setopt($ch, CURLOPT_USERPWD, $this->aCurrentUser['username'] . ':' . $this->aCurrentUser['auth']);
 		}
 
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);

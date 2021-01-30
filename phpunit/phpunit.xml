@@ -23,5 +23,6 @@
         <env name="HOME_URL" value="HOME_URL_VALUE"/>
         <env name="ADMIN_USERNAME" value="ADMIN_USERNAME_VALUE"/>
         <env name="ADMIN_AUTH_PASS" value="ADMIN_AUTH_PASS_VALUE"/>
+        <env name="ADMIN_PASSWORD" value="ADMIN_PASSWORD_VALUE"/>
     </php>
 </phpunit>
