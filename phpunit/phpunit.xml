@@ -8,12 +8,15 @@
 >
     <testsuites>
         <testsuite name="Wiloke Test">
-            <directory suffix=".php">./tests/</directory>
+            <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./tests/</directory>
+            <file>bootstrap.php</file>
+            <file>cookies.txt</file>
+            <file>HTTP.php</file>
+            <file>CommonController.php</file>
         </whitelist>
     </filter>
     <php>
