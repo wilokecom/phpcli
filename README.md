@@ -31,6 +31,7 @@ EG: WilokeTests (1)</li>
 site with your administrator account -> Profile -> My Profile -> Create an Application Password
 </li>
     <li>admin_username: The username of your administrator account.</li>
+    <li>admin_password: The password of your administrator account.</li>
 </ul>
 
 EXAMPLES With SUBCOMMANDS
