@@ -47,21 +47,6 @@ abstract class CommonController extends Command
 
 	public abstract function setRelativeComponentDir();
 
-	protected function createApplicationPassword()
-	{
-		$phpUnitTest = dirname(plugin_dir_path(__FILE__)) . '/phpunit.xml';
-		$content = file_get_contents($phpUnitTest);
-
-		if (strpos($content, 'ADMIN_AUTH_PASS_VALUE') !== false) {
-			$aResponse = \WP_Application_Passwords::create_new_application_password($this->getAdminId(), [
-				'name' => 'My App'
-			]);
-
-			$content = str_replace('ADMIN_AUTH_PASS_VALUE', $aResponse[0], $content);
-			file_put_contents($phpUnitTest, $content);
-		}
-	}
-
 	public function setRelativeTargetFileDir($dir = ''): CommonController
 	{
 		if (empty($dir)) {
