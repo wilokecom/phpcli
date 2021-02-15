@@ -26,8 +26,8 @@ class SetupPHPUNIT extends Command
 	protected $commandOptionRestBase         = 'rb';
 	protected $commandOptionRestBaseRestBase = 'Provide your Rest Namespace. EG: wiloke/v2. ';
 
-	protected $commandOptionNameSpace     = 'namespace';
-	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
+	protected $commandOptionTestNameSpace     = 'testnamespace';
+	protected $commandOptionTestNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
 
 	protected $commandOptionApplicationPassword     = 'authpass';
 	protected $commandOptionApplicationPasswordDesc = 'Provide your admin application password';
@@ -69,8 +69,8 @@ class SetupPHPUNIT extends Command
 	/**
 	 * @var mixed
 	 */
-	private $namespace;
-	private $namespacePlaceholder = 'WilokeTest';
+	private $testNamespace;
+	private $testNamespacePlaceholder = 'WilokeTest';
 	private $aValidTypes          = ['themes', 'plugins'];
 	/**
 	 * @var mixed
@@ -109,10 +109,10 @@ class SetupPHPUNIT extends Command
 				$this->commandOptionHomeUrlDesc
 			)
 			->addOption(
-				$this->commandOptionNameSpace,
+				$this->commandOptionTestNameSpace,
 				null,
 				InputOption::VALUE_OPTIONAL,
-				$this->commandOptionNameSpaceDesc
+				$this->commandOptionTestNameSpaceDesc
 			)
 			->addOption(
 				$this->commandOptionRestBase,
@@ -188,14 +188,14 @@ class SetupPHPUNIT extends Command
 	{
 		$content = file_get_contents($this->phpUnitSampleDir . 'HTTP.php');
 
-		if ($this->namespace) {
+		if ($this->testNamespace) {
 			$content = str_replace(
 				[
-					$this->namespacePlaceholder,
+					$this->testNamespacePlaceholder,
 					'#'
 				],
 				[
-					$this->namespace,
+					$this->testNamespace,
 					''
 				],
 				$content
@@ -209,14 +209,14 @@ class SetupPHPUNIT extends Command
 	{
 		$content = file_get_contents($this->phpUnitSampleDir . 'CommonController.php');
 
-		if ($this->namespace) {
+		if ($this->testNamespace) {
 			$content = str_replace(
 				[
-					$this->namespacePlaceholder,
+					$this->testNamespacePlaceholder,
 					'#'
 				],
 				[
-					$this->namespace,
+					$this->testNamespace,
 					''
 				],
 				$content
@@ -238,7 +238,7 @@ class SetupPHPUNIT extends Command
 			$this->fileName = $oInput->getArgument($this->commandArgsName);
 			$this->homeUrl = $oInput->getOption($this->commandOptionHomeUrl);
 			$this->restBase = $oInput->getOption($this->commandOptionRestBase);
-			$this->namespace = $oInput->getOption($this->commandOptionNameSpace);
+			$this->testNamespace = $oInput->getOption($this->commandOptionTestNameSpace);
 			$this->adminUsername = $oInput->getOption($this->commandOptionAdminUsername);
 			$this->adminPassword = $oInput->getOption($this->commandOptionAdminPassword);
 			$this->authPassword = $oInput->getOption($this->commandOptionApplicationPassword);

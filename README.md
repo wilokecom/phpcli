@@ -25,7 +25,7 @@ SUBCOMMANDS
 <ul>
     <li>homeurl: Enter in your website url</li>
     <li>rb: Rest Base. EG: wiloke/v2</li>
-    <li>namespace: Enter in your Unit Test Namespace. You can define your Unit Test Namespace under composer.json. 
+    <li>testnamespace: Enter in your Unit Test Namespace. You can define your Unit Test Namespace under composer.json. 
 EG: WilokeTests (1)</li>
     <li>authpass: This feature is available since WordPress 5.6. To create your Application Password: Log into your 
 site with your administrator account -> Profile -> My Profile -> Create an Application Password
@@ -37,11 +37,11 @@ site with your administrator account -> Profile -> My Profile -> Create an Appli
 EXAMPLES With SUBCOMMANDS
 <pre style="background: black; color: white">
 ./vendor/bin/wilokecli make:unittest plugins sample-plugin --homeurl=https://wiloke.com --rb=wiloke/v2 
---namespace=WilokeListingToolsTests --admin_username=admin --authpass=yourpass
+--testnamespace=WilokeListingToolsTests --admin_username=admin --admin_password=admin --authpass=yourpass
 </pre>
 
 
-(1): Define Unit Test namespace
+(1): Define Unit Test testnamespace
 <pre style="background: black; color: white">
 {
     "autoload": {
