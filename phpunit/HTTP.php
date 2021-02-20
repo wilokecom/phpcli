@@ -1,16 +1,16 @@
 <?php
 
-#namespace WilokeTest;
+namespace WilcitySC2Tests;
 
 trait HTTP
 {
 	protected $aAccounts;
 
-	protected $aAdminInfo
+	protected array $aAdminInfo
 		= [
 			'username' => 'admin'
 		];
-	protected $aCurrentUser;
+	protected       $aCurrentUser;
 
 	protected $isEnableUserLogin;
 	protected $oUser;
@@ -22,7 +22,7 @@ trait HTTP
 	protected $password;
 	protected $aGeneralSettings;
 
-	protected function getAdminId()
+	protected function getAdminId(): int
 	{
 		$this->oUser = get_user_by('login', $this->aAdminInfo['username']);
 		$this->userId = $this->oUser->ID;
@@ -98,7 +98,7 @@ trait HTTP
 		return $this;
 	}
 
-	protected function getAccount($account = '')
+	protected function getAccount($account = ''): array
 	{
 		if (empty($account)) {
 			$account = 'admin';
@@ -192,8 +192,12 @@ trait HTTP
 
 		curl_setopt($ch, CURLOPT_URL, $url);
 
-		if ($this->isEnableUserLogin && !$this->isAjax) {
-			curl_setopt($ch, CURLOPT_USERPWD, $this->aCurrentUser['username'] . ':' . $this->aCurrentUser['auth']);
+		if ($this->isEnableUserLogin) {
+			if ($this->isAjax) {
+				curl_setopt($ch, CURLOPT_USERPWD, $this->aCurrentUser['username'] . ':' . $this->aCurrentUser['auth']);
+			} else {
+				$this->ajaxLogin($this->getAccount($this->aCurrentUser['username']));
+			}
 		}
 
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
