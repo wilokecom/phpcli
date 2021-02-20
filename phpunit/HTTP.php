@@ -193,7 +193,7 @@ trait HTTP
 		curl_setopt($ch, CURLOPT_URL, $url);
 
 		if ($this->isEnableUserLogin) {
-			if ($this->isAjax) {
+			if (!$this->isAjax) {
 				curl_setopt($ch, CURLOPT_USERPWD, $this->aCurrentUser['username'] . ':' . $this->aCurrentUser['auth']);
 			} else {
 				$this->ajaxLogin($this->getAccount($this->aCurrentUser['username']));
