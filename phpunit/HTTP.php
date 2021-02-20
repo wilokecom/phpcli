@@ -236,7 +236,7 @@ trait HTTP
 			];
 		}
 
-		return $aOutput;
+		return empty($aOutput) ? $output : $aOutput;
 	}
 
 	public function restGET($endpoint, array $aArgs = [])
