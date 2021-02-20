@@ -81,14 +81,11 @@ trait HTTP
 				'action'    => 'login'
 			]
 		);
-
 		curl_setopt($curl, CURLOPT_POST, TRUE);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $post);
 
 		$output = curl_exec($curl);
-
 		curl_close($curl);
-
 		return $this;
 	}
 
@@ -196,7 +193,7 @@ trait HTTP
 			if (!$this->isAjax) {
 				curl_setopt($ch, CURLOPT_USERPWD, $this->aCurrentUser['username'] . ':' . $this->aCurrentUser['auth']);
 			} else {
-				$this->ajaxLogin($this->getAccount($this->aCurrentUser['username']));
+				$this->ajaxLogin($this->aCurrentUser['username']);
 			}
 		}
 
