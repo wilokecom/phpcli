@@ -88,8 +88,10 @@ class SetupMessageFactory extends CommonController
 	 */
 	protected function execute(InputInterface $oInput, OutputInterface $oOutput): ?int
 	{
+		$this->commonConfiguration($oInput, $oOutput);
 		$this->setRelativeTargetFileDir();
-		$this->relativeComponentDir = dirname(dirname(__FILE__)) . '/' . $this->relativeComponentDir . '/';
+		$this->relativeComponentDir = dirname(dirname(__FILE__)) . '/components/' . $this->relativeComponentDir . '/';
+
 		$this->autoloadDir = $oInput->getArgument($this->commandAutoloadDir);
 		$this->oFileSystem = new Filesystem();
 

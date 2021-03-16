@@ -20,6 +20,42 @@ class CommonController extends TestCase
 		$this->configureAPI();
 	}
 
+	public function setPostToTest($postId)
+	{
+		update_post_meta($postId, 'wiloke_cli_test', 'yes');
+
+		return $this;
+	}
+
+	public function deleteAllTest(
+		$postType = 'any',
+		$aPostStatus = ['publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash']
+	)
+	{
+		$query = new \WP_Query([
+			'post_type'      => $postType,
+			'post_status'    => $aPostStatus,
+			'meta_query'     => [
+				[
+					'key'     => 'wiloke_cli_test',
+					'value'   => 'yes',
+					'compare' => '=',
+				],
+			],
+			'posts_per_page' => -1
+		]);
+
+		if ($query->have_posts()) {
+			while ($query->have_posts()) {
+				$query->the_post();
+				wp_delete_post($query->post->ID, true);
+			}
+		}
+		wp_reset_postdata();
+
+		return $this;
+	}
+
 	protected function createApplicationPassword()
 	{
 		$phpUnitTest = dirname(plugin_dir_path(__FILE__)) . '/phpunit.xml';
@@ -62,7 +98,7 @@ class CommonController extends TestCase
 		$method = $reflection->getProperty($propertyName);
 		$method->setAccessible(true);
 
-		$method->setValue( $object, $params);
+		$method->setValue($object, $params);
 	}
 
 	public function getPrivateProperty($object, $propertyName)
@@ -127,7 +163,7 @@ class CommonController extends TestCase
 
 				$this->aCreatedAccountIds[] = $userId;
 				$oUser = new \WP_User($userId);
-			}   else {
+			} else {
 				$oUser = new \WP_User($userId);
 			}
 		}
