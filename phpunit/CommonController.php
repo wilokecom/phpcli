@@ -153,7 +153,7 @@ class CommonController extends TestCase
 
 				wp_update_user($aUser);
 
-				$aApplication = \WP_Application_Passwords::create_new_application_password($userId, ['name' => 'test']);
+				$aApplication = \WP_Application_Passwords::create_new_application_password($userId, ['name' => uniqid('test')]);
 
 				$this->addAccounts($aUser['username'], [
 					'username' => $aUser['username'],
