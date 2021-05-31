@@ -33,10 +33,13 @@ class RestMessage extends AbstractMessage
 	public function success($msg, $aAdditional = [])
 	{
 		$aData = [
-			'msg'    => $msg,
-			'status' => 'success'
+			'msg'    => $msg
 		];
 		$aData = array_merge($aAdditional, $aData);
+
+		if (empty($aAdditional)) {
+			throw new \Exception('You must set items/item as empty');
+		}
 
 		return (new \WP_REST_Response($aData, 200));
 	}
@@ -50,9 +53,7 @@ class RestMessage extends AbstractMessage
 	public function error($msg, $code)
 	{
 		return new \WP_REST_Response([
-			'error' => [
-				'msg' => $msg
-			]
+			'msg' => $msg
 		], $code);
 	}
 }
