@@ -15,7 +15,7 @@ class NormalMessage extends AbstractMessage
 	 *
 	 * @return array
 	 */
-	public function retrieve($msg, $code, $aAdditional = [])
+	public function retrieve($msg, $code, array $aAdditional = []): array
 	{
 		if ($code == 200) {
 			return $this->success($msg, $aAdditional);
@@ -24,37 +24,13 @@ class NormalMessage extends AbstractMessage
 		}
 	}
 
-	/**
-	 * @param       $msg
-	 * @param array $aAdditional
-	 *
-	 * @return array
-	 */
-	public function success($msg, $aAdditional = [])
+	public function success($msg, array $aAdditional = [])
 	{
-		$aData = [
-			'msg'    => $msg,
-			'status' => 'success'
-		];
-
-		return array_merge($aAdditional, $aData);
+		return $this->handleSuccess($msg, $aAdditional);
 	}
 
-	/**
-	 * @param       $msg
-	 * @param       $code
-	 * @param array $aAdditional
-	 *
-	 * @return array
-	 */
-	public function error($msg, $code, $aAdditional = [])
+	public function error($msg, $code, array $aAdditional = [])
 	{
-		$aData = [
-			'msg'    => $msg,
-			'code'   => $code,
-			'status' => 'error'
-		];
-
-		return array_merge($aData, $aAdditional);
+		return $this->handleError($msg, $code, $aAdditional);
 	}
 }
