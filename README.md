@@ -84,6 +84,23 @@ Example
 ./vendor/bin/wilokecli make:slack-message app --namespace=WilokeNamespace
 </pre>
 
+## Generating Prefix
+<pre>
+./vendor/bin/wilokecli make:prefix app --namespace=WilokeNamespace
+</pre>
+
+## Generating Upload
+Chạy lần lượt các commend line sau
+<pre>
+./vendor/bin/wilokecli make:prefix app --namespace=WilokeNamespace
+</pre>
+<pre>
+./vendor/bin/wilokecli make:message-factory app --namespace=WilokeNamespace
+</pre>
+<pre>
+./vendor/bin/wilokecli make:upload app --namespace=WilokeNamespace
+</pre>
+
 
 ## Generating Query
 <pre>
