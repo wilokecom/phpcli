@@ -11,11 +11,11 @@ class NormalMessage extends AbstractMessage
 	/**
 	 * @param       $msg
 	 * @param       $code
-	 * @param array $aAdditional
+	 * @param null $aAdditional
 	 *
 	 * @return array
 	 */
-	public function retrieve($msg, $code, array $aAdditional = []): array
+	public function retrieve($msg, $code, $aAdditional = []): array
 	{
 		if ($code == 200) {
 			return $this->success($msg, $aAdditional);
@@ -24,12 +24,20 @@ class NormalMessage extends AbstractMessage
 		}
 	}
 
-	public function success($msg, array $aAdditional = [])
+	public function response( array $aResponse ): array {
+		if ( $aResponse['status'] === 'success' ) {
+			return $this->success( $aResponse['message'], $aResponse['data'] ?? null );
+		} else {
+			return $this->error( $aResponse['message'], $aResponse['code'], $aResponse['data'] ?? null );
+		}
+	}
+
+	public function success($msg, $aAdditional = null)
 	{
 		return $this->handleSuccess($msg, $aAdditional);
 	}
 
-	public function error($msg, $code, array $aAdditional = [])
+	public function error($msg, $code, $aAdditional = null)
 	{
 		return $this->handleError($msg, $code, $aAdditional);
 	}

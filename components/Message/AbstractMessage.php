@@ -11,35 +11,37 @@ abstract class AbstractMessage
 	/**
 	 * @param       $msg
 	 * @param       $code
-	 * @param array $aAdditional
+	 * @param  $aAdditional
 	 *
 	 * @return mixed
 	 */
-	abstract public function retrieve($msg, $code, array $aAdditional = []);
+	abstract public function retrieve($msg, $code, $aAdditional = null);
+
+	abstract public function response( array $aResponse );
 
 	/**
 	 * @param       $msg
-	 * @param array $aAdditional
+	 * @param null $aAdditional
 	 *
 	 * @return mixed
 	 */
-	abstract public function success($msg, array $aAdditional = []);
+	abstract public function success($msg, $aAdditional = null);
 
 	/**
 	 * @param $msg
 	 * @param $code
-	 * @param array $aAdditional
+	 * @param null $aAdditional
 	 * @return mixed
 	 */
-	abstract public function error($msg, $code, array $aAdditional = []);
+	abstract public function error($msg, $code, $aAdditional = null);
 
 	/**
 	 * @param       $msg
-	 * @param array $aAdditional
+	 * @param null $aAdditional
 	 *
 	 * @return array
 	 */
-	protected function handleSuccess($msg, array $aAdditional = []): array
+	protected function handleSuccess($msg, $aAdditional = null): array
 	{
 		$aData = [
 			'message' => $msg,
@@ -52,11 +54,11 @@ abstract class AbstractMessage
 	/**
 	 * @param       $msg
 	 * @param       $code
-	 * @param array $aAdditional
+	 * @param null $aAdditional
 	 *
 	 * @return array
 	 */
-	protected function handleError($msg, $code, array $aAdditional = []): array
+	protected function handleError($msg, $code, $aAdditional = null): array
 	{
 		$aData = [
 			'message' => $msg,

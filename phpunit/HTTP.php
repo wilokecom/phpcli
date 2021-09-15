@@ -187,6 +187,7 @@ trait HTTP
 			$url = add_query_arg($aArgs, $url);
 		}
 
+		$url = trim($url, '/');
 		curl_setopt($ch, CURLOPT_URL, $url);
 
 		if ($this->isEnableUserLogin) {
@@ -221,23 +222,23 @@ trait HTTP
 		$this->logout();
 		$this->isAjax = false;
 
-		if (isset($errMsg)) {
+		if ( isset( $errMsg ) ) {
 			return [
-				'status' => false,
-				'msg'    => $errMsg
+				'status'  => 'error',
+				'message' => $errMsg
 			];
 		}
 
-		$aOutput = is_array($output) ? $output : json_decode($output, true);
+		$aOutput = is_array( $output ) ? $output : json_decode( $output, true );
 
-		if (isset($aOutput['data']) && isset($aOutput['data']['status']) && $aOutput['data']['status'] == 200) {
+		if ( isset( $aOutput['data'] ) && isset( $aOutput['data']['status'] ) && $aOutput['data']['status'] == 200 ) {
 			return [
-				'status' => false,
-				'msg'    => $aOutput['message']
+				'status'  => 'error',
+				'message' => $aOutput['message']
 			];
 		}
 
-		return empty($aOutput) ? $output : $aOutput;
+		return empty( $aOutput ) ? $output : $aOutput;
 	}
 
 	public function restGET($endpoint, array $aArgs = [])

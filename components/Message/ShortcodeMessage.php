@@ -8,14 +8,22 @@
  */
 class ShortcodeMessage extends AbstractMessage
 {
+	public function response( array $aResponse ): string {
+		if ( $aResponse['status'] === 'success' ) {
+			return $this->success( $aResponse['message'], $aResponse['data'] ?? null );
+		} else {
+			return $this->error( $aResponse['message'], $aResponse['code'], $aResponse['data'] ?? null );
+		}
+	}
+
 	/**
 	 * @param       $msg
 	 * @param       $code
-	 * @param array $aAdditional
+	 * @param null $aAdditional
 	 *
 	 * @return string
 	 */
-	public function retrieve($msg, $code, array $aAdditional = []): string
+	public function retrieve($msg, $code, $aAdditional = null): string
 	{
 		if ($code == 200) {
 			return $this->success($msg, $aAdditional);
@@ -26,11 +34,11 @@ class ShortcodeMessage extends AbstractMessage
 
 	/**
 	 * @param       $msg
-	 * @param array $aAdditional
+	 * @param null $aAdditional
 	 *
 	 * @return string
 	 */
-	public function success($msg, array $aAdditional = []): string
+	public function success($msg, $aAdditional = null): string
 	{
 		return '%SC%' . json_encode($this->handleSuccess($msg, $aAdditional)) . '%SC%';
 	}
@@ -41,7 +49,7 @@ class ShortcodeMessage extends AbstractMessage
 	 *
 	 * @return string
 	 */
-	public function error($msg, $code, array $aAdditional = []): string
+	public function error($msg, $code, $aAdditional = null): string
 	{
 		return '%SC%' . json_encode($this->handleError($msg, $code, $aAdditional)) . '%SC%';
 	}

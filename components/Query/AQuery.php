@@ -69,21 +69,4 @@ class AQuery
 	{
 		return $this->oQueryHandler->getQuery()->found_posts;
 	}
-
-	public function response(): array
-	{
-		if (empty($this->oResponseHanlder)) {
-			throw new \Exception(esc_html__('The oResponseHanlder is required', 'wilcity-shortcode2'));
-		}
-
-		if (empty($this->oQueryBuilder)) {
-			throw new \Exception(esc_html__('The oQueryBuilder is required', 'wilcity-shortcode2'));
-		}
-
-		if (empty($this->oQueryHandler)) {
-			throw new \Exception(esc_html__('The oQueryHandler is required', 'wilcity-shortcode2'));
-		}
-
-		return $this->oQueryHandler->setQueryArgs($this->parseArgs()->aArgs)->setResponse($this->oResponseHanlder)->query();
-	}
 }
