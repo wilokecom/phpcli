@@ -22,6 +22,7 @@ abstract class CommonController extends Command
 	protected $classNamePlaceholder       = 'WilokeClass';
 	protected $className;
 
+	protected $prefixDefinedValue   = 'PROJECT_PREFIX';
 	protected $commandFileName     = 'filename';
 	protected $commandFileNameDesc = 'Enter your shortcode Filename';
 
@@ -245,14 +246,16 @@ abstract class CommonController extends Command
 					'class ' . $this->classNamePlaceholder,
 					'#namespace',
 					'WilokeOriginalNamespace',
-					'#use'
+					'#use',
+					'PROJECT_PREFIX'
 				],
 				[
 					$namespace,
 					'class ' . $this->className,
 					'namespace',
 					$this->originalNamespace,
-					'use'
+					'use',
+					$this->prefixDefinedValue
 				],
 				$this->content
 			);

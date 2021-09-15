@@ -8,11 +8,13 @@ use Symfony\Component\Console\Application;
 use \WilokeCommandLine\SetupPHPUNIT;
 use \WilokeCommandLine\SetupPostSkeleton;
 use \WilokeCommandLine\SetupMessageFactory;
+use WilokeCommandLine\SetupPrefix;
 use \WilokeCommandLine\SetupQuery;
 use \WilokeCommandLine\SetupGrumPHP;
 use \WilokeCommandLine\SetupShortcode;
 use \WilokeCommandLine\SetupElementor;
 use WilokeCommandLine\SetupSlackPostMessage;
+use WilokeCommandLine\SetupUpload;
 
 $application = new Application();
 
@@ -25,4 +27,6 @@ $application->add(new SetupGrumPHP());
 $application->add(new SetupShortcode());
 $application->add(new SetupElementor());
 $application->add(new SetupSlackPostMessage());
+$application->add(new SetupUpload());
+$application->add(new SetupPrefix());
 $application->run();
