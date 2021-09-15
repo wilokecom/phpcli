@@ -1,7 +1,7 @@
 <?php
 #namespace WilokeTest;
 
-#use WilokeOriginalNamespace\Illuminate\MessageFactory;
+#use WilokeOriginalNamespace\Illuminate\Message\MessageFactory;
 
 class Base64Upload extends AUpload {
 	/**

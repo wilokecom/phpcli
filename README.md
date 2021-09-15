@@ -86,8 +86,9 @@ Example
 
 ## Generating Prefix
 <pre>
-./vendor/bin/wilokecli make:prefix app --namespace=WilokeNamespace
+./vendor/bin/wilokecli make:prefix app --namespace=WilokeNamespace --prefixDefine=MY_PREFIX
 </pre>
+* MY_PREFIX: You should define a prefix on init plugin file and put it there. EG: define('MY_PREFIX', 'wiloke_');
 
 ## Generating Upload
 Chạy lần lượt các commend line sau

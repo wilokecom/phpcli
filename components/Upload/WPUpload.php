@@ -3,7 +3,7 @@
 
 
 use finfo;
-#use WilokeOriginalNamespace\Illuminate\MessageFactory;
+#use WilokeOriginalNamespace\Illuminate\Message\MessageFactory;
 use RuntimeException;
 
 class WPUpload extends AUpload {

@@ -110,6 +110,12 @@ class SetupPrefix extends CommonController
 			$this->originalNamespace = $oInput->getOption($this->commandOptionNameSpace);
 			$this->prefixDefinedValue = $oInput->getOption($this->prefixDefineName);
 
+			if (empty( $this->prefixDefinedValue)) {
+				$oOutput->writeln('Please provide prefixDefine. EG: --prefixDefine=MY_PREFIX',
+					OutputInterface::VERBOSITY_NORMAL);
+				return false;
+			}
+
 			try {
 				$this->createPostSkeletonComponent();
 				$oOutput->writeln('Wiloke PHPUNIT has been setup successfully');

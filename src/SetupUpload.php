@@ -22,11 +22,11 @@ class SetupUpload extends CommonController
 	/**
 	 * @var mixed
 	 */
-	private $originalFileNames = ['AUpload.php', 'Base64Upload.php', 'ImageURLUpload.php', 'WPUpload.php'];
+	private $originalFileNames = ['AUpload.php', 'Base64Upload.php', 'ImageURLUpload.php', 'WPUpload.php', 'README.md'];
 
 	public function setRelativeComponentDir()
 	{
-		$this->relativeComponentDir = 'Prefix';
+		$this->relativeComponentDir = 'Upload';
 	}
 
 	public function setOriginalRelativeDir()

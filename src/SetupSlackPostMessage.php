@@ -7,8 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SetupSlackPostMessage extends CommonController
-{
+class SetupSlackPostMessage extends CommonController {
 	protected $commandName          = 'make:slack-message';
 	protected $commandDesc          = 'Setup Slack Post Message';
 	protected $relativeComponentDir = 'Slack';
@@ -16,31 +15,33 @@ class SetupSlackPostMessage extends CommonController
 	protected $commandOptionNameSpace     = 'namespace';
 	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
 
+	protected $commandAutoloadDir     = 'autoloadDir';
+	protected $commandAutoloadDirDesc = 'Enter "App Directory Name" that you defined in the composer autoload. EG: src or app';
+
 	protected $originalFilename = 'PostMessage.php';
+	protected $className        = 'PostMessage';
 
 	/**
 	 * @var mixed
 	 */
 	private $filename;
 
-	public function setRelativeComponentDir()
-	{
+	public function setRelativeComponentDir() {
 		$this->relativeComponentDir = 'Slack';
 	}
 
-	public function setOriginalRelativeDir()
-	{
+	public function setOriginalRelativeDir() {
 		$this->originalRelativeFileDir = 'Illuminate/Slack';
 	}
 
-	public function configure()
-	{
-		$this->setName($this->commandName)
-			->setDescription($this->commandDesc)
+	public function configure() {
+		$this->setName( $this->commandName )
+			->setDescription( $this->commandDesc )
 			->addArgument(
-				$this->commonClassName,
-				InputArgument::REQUIRED,
-				$this->commonClassNameDesc
+				$this->commandAutoloadDir,
+				InputArgument::OPTIONAL,
+				$this->commandAutoloadDirDesc,
+				$this->autoloadDir
 			)
 			->addOption(
 				$this->commandOptionNameSpace,
@@ -50,14 +51,13 @@ class SetupSlackPostMessage extends CommonController
 			);
 	}
 
-	protected function createShortcode(): bool
-	{
-		if (!$this->oFileSystem->exists($this->getAbsFileDir())) {
-			$this->oFileSystem->mkdir($this->getAbsFileDir());
+	protected function createShortcode(): bool {
+		if ( ! $this->oFileSystem->exists( $this->getAbsFileDir() ) ) {
+			$this->oFileSystem->mkdir( $this->getAbsFileDir() );
 		}
 
-		if ($this->oFileSystem->exists($this->trailingslashit($this->getAbsFileDir()) . $this->filename)) {
-			if (!$this->isContinue()) {
+		if ( $this->oFileSystem->exists( $this->trailingslashit( $this->getAbsFileDir() ) . $this->filename ) ) {
+			if ( ! $this->isContinue() ) {
 				return true;
 			}
 		}
@@ -76,11 +76,9 @@ class SetupSlackPostMessage extends CommonController
 	}
 
 
-	public function execute(InputInterface $oInput, OutputInterface $oOutput)
-	{
-		$this->commonConfiguration($oInput, $oOutput);
-		$this->className = $oInput->getArgument($this->commonClassName);
-		$this->filename = $this->className . '.php';
+	public function execute( InputInterface $oInput, OutputInterface $oOutput ) {
+		$this->commonConfiguration( $oInput, $oOutput );
+		$this->filename  = $this->className . '.php';
 
 		$this->createShortcode();
 		$this->outputMsg();

@@ -1,8 +1,8 @@
 <?php
 #namespace WilokeTest;
 
-#use WilokeOriginalNamespace\Illuminate\MessageFactory;
-#use WilokeOriginalNamespace\Illuminate\AutoPrefix;
+#use WilokeOriginalNamespace\Illuminate\Message\MessageFactory;
+#use WilokeOriginalNamespace\Illuminate\Prefix\AutoPrefix;
 
 class ImageURLUpload extends AUpload {
 	private array  $_aPathInfo      = [];
