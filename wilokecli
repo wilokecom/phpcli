@@ -12,6 +12,7 @@ use \WilokeCommandLine\SetupQuery;
 use \WilokeCommandLine\SetupGrumPHP;
 use \WilokeCommandLine\SetupShortcode;
 use \WilokeCommandLine\SetupElementor;
+use WilokeCommandLine\SetupSlackPostMessage;
 
 $application = new Application();
 
@@ -23,4 +24,5 @@ $application->add(new SetupQuery());
 $application->add(new SetupGrumPHP());
 $application->add(new SetupShortcode());
 $application->add(new SetupElementor());
+$application->add(new SetupSlackPostMessage());
 $application->run();

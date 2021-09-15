@@ -77,6 +77,14 @@ Example
 ./vendor/bin/wilokecli make:message-factory app --namespace=WilokeNamespace
 </pre>
 
+## Generating Slack Post Message
+Example
+
+<pre>
+./vendor/bin/wilokecli make:slack-message app --namespace=WilokeNamespace
+</pre>
+
+
 ## Generating Query
 <pre>
 ./vendor/bin/wilokecli make:query --namespace=WilokeNamespace
