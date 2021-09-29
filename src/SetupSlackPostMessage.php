@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class SetupSlackPostMessage extends CommonController {
 	protected $commandName          = 'make:slack-message';
@@ -78,6 +79,11 @@ class SetupSlackPostMessage extends CommonController {
 
 	public function execute( InputInterface $oInput, OutputInterface $oOutput ) {
 		$this->commonConfiguration( $oInput, $oOutput );
+		$this->setRelativeTargetFileDir();
+		$this->relativeComponentDir = dirname(dirname(__FILE__)) . '/components/' . $this->relativeComponentDir . '/';
+		$this->autoloadDir = $oInput->getArgument($this->commandAutoloadDir);
+		$this->oFileSystem = new Filesystem();
+
 		$this->filename  = $this->className . '.php';
 
 		$this->createShortcode();
