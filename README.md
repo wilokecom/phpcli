@@ -56,15 +56,15 @@ EXAMPLES With SUBCOMMANDS
 Example
 
 <pre>
-./vendor/bin/wilokecli make:post-skeleton app --namespace=WilokeNamespace
+./vendor/bin/wilokecli make:post-skeleton src --namespace=WilokeNamespace
 </pre>
 
-<strong style="color:red">app</strong> is a folder that you defined under autoload Psr-4 in composer.json.
+<strong style="color:red">src</strong> is a folder that you defined under autoload Psr-4 in composer.json.
 <pre>
 {
     "autoload": {
         "psr-4": {
-            "WilokeNamespace\\": "app/"
+            "WilokeNamespace\\": "src/"
         }
     }
 }
@@ -74,32 +74,32 @@ Example
 Example
 
 <pre>
-./vendor/bin/wilokecli make:message-factory app --namespace=WilokeNamespace
+./vendor/bin/wilokecli make:message-factory src --namespace=WilokeNamespace
 </pre>
 
 ## Generating Slack Post Message
 Example
 
 <pre>
-./vendor/bin/wilokecli make:slack-message app --namespace=WilokeNamespace
+./vendor/bin/wilokecli make:slack-message src --namespace=WilokeNamespace
 </pre>
 
 ## Generating Prefix
 <pre>
-./vendor/bin/wilokecli make:prefix app --namespace=WilokeNamespace --prefixDefine=MY_PREFIX
+./vendor/bin/wilokecli make:prefix src --namespace=WilokeNamespace --prefixDefine=MY_PREFIX
 </pre>
 * MY_PREFIX: You should define a prefix on init plugin file and put it there. EG: define('MY_PREFIX', 'wiloke_');
 
 ## Generating Upload
 Chạy lần lượt các commend line sau
 <pre>
-./vendor/bin/wilokecli make:prefix app --namespace=WilokeNamespace
+./vendor/bin/wilokecli make:prefix src --namespace=WilokeNamespace
 </pre>
 <pre>
-./vendor/bin/wilokecli make:message-factory app --namespace=WilokeNamespace
+./vendor/bin/wilokecli make:message-factory src --namespace=WilokeNamespace
 </pre>
 <pre>
-./vendor/bin/wilokecli make:upload app --namespace=WilokeNamespace
+./vendor/bin/wilokecli make:upload src --namespace=WilokeNamespace
 </pre>
 
 

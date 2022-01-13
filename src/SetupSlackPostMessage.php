@@ -7,7 +7,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SetupSlackPostMessage extends CommonController {
+class SetupSlackPostMessage extends CommonController
+{
 	protected $commandName          = 'make:slack-message';
 	protected $commandDesc          = 'Setup Slack Post Message';
 	protected $relativeComponentDir = 'Slack';
@@ -21,22 +22,28 @@ class SetupSlackPostMessage extends CommonController {
 	protected $originalFilename = 'PostMessage.php';
 	protected $className        = 'PostMessage';
 
+	protected $logModelFile      = 'LogModel.php';
+	protected $logModelClassName = 'LogModel';
+
 	/**
 	 * @var mixed
 	 */
 	private $filename;
 
-	public function setRelativeComponentDir() {
+	public function setRelativeComponentDir()
+	{
 		$this->relativeComponentDir = 'Slack';
 	}
 
-	public function setOriginalRelativeDir() {
+	public function setOriginalRelativeDir()
+	{
 		$this->originalRelativeFileDir = 'Illuminate/Slack';
 	}
 
-	public function configure() {
-		$this->setName( $this->commandName )
-			->setDescription( $this->commandDesc )
+	public function configure()
+	{
+		$this->setName($this->commandName)
+			->setDescription($this->commandDesc)
 			->addArgument(
 				$this->commandAutoloadDir,
 				InputArgument::OPTIONAL,
@@ -51,13 +58,14 @@ class SetupSlackPostMessage extends CommonController {
 			);
 	}
 
-	protected function createShortcode(): bool {
-		if ( ! $this->oFileSystem->exists( $this->getAbsFileDir() ) ) {
-			$this->oFileSystem->mkdir( $this->getAbsFileDir() );
+	protected function createPostMessageFile(): bool
+	{
+		if (!$this->oFileSystem->exists($this->getAbsFileDir())) {
+			$this->oFileSystem->mkdir($this->getAbsFileDir());
 		}
 
-		if ( $this->oFileSystem->exists( $this->trailingslashit( $this->getAbsFileDir() ) . $this->filename ) ) {
-			if ( ! $this->isContinue() ) {
+		if ($this->oFileSystem->exists($this->trailingslashit($this->getAbsFileDir()) . $this->filename)) {
+			if (!$this->isContinue()) {
 				return true;
 			}
 		}
@@ -67,7 +75,7 @@ class SetupSlackPostMessage extends CommonController {
 			$this->trailingslashit(
 				$this->relativeTargetFileDir
 			),
-			$this->originalNamespace . '\\Controllers\\' . $this->relativeComponentDir,
+			$this->originalNamespace . '\\Illuminate\\' . $this->relativeComponentDir,
 			$this->filename
 		);
 
@@ -75,14 +83,29 @@ class SetupSlackPostMessage extends CommonController {
 		return true;
 	}
 
+	protected function createLogModelFile(): bool
+	{
+		$this->dummyFile(
+			$this->getRelativeComponentDir() . $this->logModelFile,
+			$this->trailingslashit(
+				$this->relativeTargetFileDir
+			),
+			$this->originalNamespace . '\\Illuminate\\' . $this->relativeComponentDir,
+			$this->logModelFile
+		);
 
-	public function execute( InputInterface $oInput, OutputInterface $oOutput ) {
-		$this->commonConfiguration( $oInput, $oOutput );
+		return true;
+	}
+
+	public function execute(InputInterface $oInput, OutputInterface $oOutput)
+	{
+		$this->commonConfiguration($oInput, $oOutput);
 		$this->setRelativeTargetFileDir();
 		$this->autoloadDir = $oInput->getArgument($this->commandAutoloadDir);
-		$this->filename  = $this->className . '.php';
+		$this->filename = $this->className . '.php';
 
-		$this->createShortcode();
+		$this->createPostMessageFile();
+		$this->createLogModelFile();
 		$this->outputMsg();
 	}
 }
