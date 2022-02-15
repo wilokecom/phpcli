@@ -52,6 +52,6 @@ class RestMessage extends AbstractMessage
 	 */
 	public function error($msg, $code, $aAdditional = null): WP_REST_Response
 	{
-		return new WP_REST_Response($this->handleError($msg, $code, $aAdditional));
+		return new WP_REST_Response($this->handleError($msg, $code, $aAdditional), $code);
 	}
 }
