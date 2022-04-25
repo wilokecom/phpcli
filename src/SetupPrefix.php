@@ -4,6 +4,7 @@
 namespace WilokeCommandLine;
 
 
+use Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,11 +13,12 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class SetupPrefix extends CommonController
 {
-	protected $commandName = 'make:prefix';
-	protected $commandDesc = 'Setup Prefix';
-
-	protected $commandAutoloadDir     = 'autoloadDir';
-	protected $commandAutoloadDirDesc = 'Enter "App Directory Name" that you defined in the composer autoload. EG: src or app';
+	protected $commandName                = 'make:prefix';
+	protected $commandDesc                = 'Setup Prefix';
+	protected $commandOptionNameSpace     = 'namespace';
+	protected $commandOptionNameSpaceDesc = 'Provide your Your Unit Test Namespace. EG: Wiloke';
+	protected $commandAutoloadDir         = 'autoloadDir';
+	protected $commandAutoloadDirDesc     = 'Enter "App Directory Name" that you defined in the composer autoload. EG: src or app';
 
 	protected $prefixDefineName     = 'prefixDefine';
 	protected $prefixDefineNameDesc = 'Enter name of prefix defined';
@@ -61,7 +63,7 @@ class SetupPrefix extends CommonController
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	private function createPostSkeletonComponent()
 	{
@@ -71,7 +73,7 @@ class SetupPrefix extends CommonController
 			$this->content = file_get_contents($this->relativeComponentDir . $fileName);
 
 			if (empty($this->content)) {
-				throw new \Exception('We could not get ' . $fileName .
+				throw new Exception('We could not get ' . $fileName .
 					' content. Please re-check read permission');
 			}
 
@@ -110,7 +112,7 @@ class SetupPrefix extends CommonController
 			$this->originalNamespace = $oInput->getOption($this->commandOptionNameSpace);
 			$this->prefixDefinedValue = $oInput->getOption($this->prefixDefineName);
 
-			if (empty( $this->prefixDefinedValue)) {
+			if (empty($this->prefixDefinedValue)) {
 				$oOutput->writeln('Please provide prefixDefine. EG: --prefixDefine=MY_PREFIX',
 					OutputInterface::VERBOSITY_NORMAL);
 				return false;
@@ -120,7 +122,7 @@ class SetupPrefix extends CommonController
 				$this->createPostSkeletonComponent();
 				$oOutput->writeln('Wiloke PHPUNIT has been setup successfully');
 			}
-			catch (\Exception $oE) {
+			catch (Exception $oE) {
 				$oOutput->writeln($oE->getMessage(), OutputInterface::VERBOSITY_NORMAL);
 			}
 		}

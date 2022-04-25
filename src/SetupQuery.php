@@ -45,6 +45,9 @@ class SetupQuery extends CommonController
 
 	protected function copyQueryFolder(): bool
 	{
+		var_dump($this->getRelativeComponentDir());
+		var_dump($this->relativeComponentDir);
+		die();
 		if (!$this->oFileSystem->exists($this->getAbsFileDir())) {
 			$this->oFileSystem->mkdir($this->getAbsFileDir(), 755);
 		}
