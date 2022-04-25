@@ -6,6 +6,7 @@ error_reporting(-1);
 require __DIR__ . '/vendor/autoload.php';
 use Symfony\Component\Console\Application;
 use \WilokeCommandLine\SetupPHPUNIT;
+use WilokeCommandLine\SetupPluginElementor;
 use \WilokeCommandLine\SetupPostSkeleton;
 use \WilokeCommandLine\SetupMessageFactory;
 use WilokeCommandLine\SetupPrefix;

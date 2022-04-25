@@ -22,7 +22,7 @@ abstract class CommonController extends Command
 	protected $classNamePlaceholder       = 'WilokeClass';
 	protected $className;
 
-	protected $prefixDefinedValue   = 'PROJECT_PREFIX';
+	protected $prefixDefinedValue  = 'PROJECT_PREFIX';
 	protected $commandFileName     = 'filename';
 	protected $commandFileNameDesc = 'Enter your shortcode Filename';
 
@@ -167,6 +167,7 @@ abstract class CommonController extends Command
 
 	protected function dummyFile($fileDir, $target, $namespace = '', $targetFilename = ''): bool
 	{
+
 		if (empty($namespace)) {
 			$namespace = $this->generateNamespace();
 		}
@@ -184,7 +185,6 @@ abstract class CommonController extends Command
 		}
 
 		$target = $this->trailingslashit($target);
-
 		if ($this->oFileSystem->exists($target . $filename)) {
 			$msg = sprintf('%s was not being override', $filename);
 			$question = sprintf('Do you want to override %s under %s folder', $filename, $target);
@@ -193,8 +193,9 @@ abstract class CommonController extends Command
 			}
 		}
 
-		if (!empty($this->originalNamespace)) {
+		if (!empty($this->originalNamespace) && !$this->isFileJsOrCssOrMDOrJson($filename)) {
 			$this->content = file_get_contents($fileDir);
+
 			$this->replaceNamespace($namespace);
 			$this->oFileSystem->dumpFile($target . $filename, $this->content);
 		} else {
@@ -202,6 +203,12 @@ abstract class CommonController extends Command
 		}
 
 		return true;
+	}
+
+	public function isFileJsOrCssOrMDOrJson($fileName): bool
+	{
+		return (strpos($fileName, 'js') !== false) || (strpos($fileName, 'css') !== false)|| (strpos($fileName, 'json') !== false)
+			|| (strpos($fileName, 'md') !== false);
 	}
 
 	public function recursiveCopy($originalDir, $targetDir, $namespace = '')
@@ -230,7 +237,6 @@ abstract class CommonController extends Command
 				if (!empty($namespace)) {
 					$namespace .= '\\' . $folder;
 				}
-
 				array_map([$this, 'recursiveCopy'], [$originalDir . $folder], [$targetDir . $folder], [$namespace]);
 			}
 		}
